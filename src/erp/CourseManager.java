@@ -8,14 +8,12 @@ import java.util.stream.Collectors;
 
 public class CourseManager {
     private static final int MAX_CREDITS = 20;
-    private List<Courses> allCourses;
     private List<Courses> registeredCourses;
     private Map<String, CompletedCourse> completedCourses;
     private int currentSemester;
     private int currentCredits;
 
     public CourseManager(int currentSemester) {
-        this.allCourses = Courses.initializeCourses();
         this.registeredCourses = new ArrayList<>();
         this.completedCourses = new HashMap<>();
         this.currentSemester = currentSemester;
@@ -23,7 +21,7 @@ public class CourseManager {
     }
 
     public boolean addCourse(String courseCode) {
-        Courses course = allCourses.stream().filter(c -> c.code.equals(courseCode)).findFirst().orElse(null);
+        Courses course = Courses.getCourse(courseCode);
         if (course == null) {
             System.out.println("This is not a valid course code");
             return false;
@@ -41,6 +39,7 @@ public class CourseManager {
         if (currentCredits + course.getCredits() <= MAX_CREDITS) {
             registeredCourses.add(course);
             currentCredits += course.getCredits();
+            System.out.println("Course " + courseCode + " added successfully.");
             return true;
         }
         System.out.println("You cannot register for this course as this will exceed the maximum credits i.e. 20");
@@ -48,26 +47,25 @@ public class CourseManager {
     }
 
     public boolean dropCourse(String courseCode) {
-        Courses course = allCourses.stream().filter(c -> c.code.equals(courseCode)).findFirst().orElse(null);
+        Courses course = registeredCourses.stream()
+                .filter(c -> c.getCode().equals(courseCode))
+                .findFirst()
+                .orElse(null);
         if (course == null) {
-            System.out.println("This is not a valid course code");
+            System.out.println("You are not registered for this course: " + courseCode);
             return false;
         }
-        Courses coursecheck = registeredCourses.stream().filter(c -> c.code.equals(courseCode)).findFirst().orElse(null);
-        if (coursecheck == null) {
-            System.out.println("You have not Registered for the course: " + courseCode);
-            return false;
-        }
-        registeredCourses.remove(coursecheck);
+        registeredCourses.remove(course);
         currentCredits -= course.getCredits();
+        System.out.println("Course " + courseCode + " dropped successfully.");
         return true;
     }
 
     private boolean arePrerequisitesMet(Courses course) {
-        if (course.prereq == null || course.prereq.length == 0) {
+        if (course.getPrereq() == null || course.getPrereq().length == 0) {
             return true;
         }
-        for (String prereq : course.prereq) {
+        for (String prereq : course.getPrereq()) {
             if (!Student.checkCourseCompletion(prereq)) {
                 return false;
             }
@@ -82,14 +80,14 @@ public class CourseManager {
             return;
         }
         for (Courses course : registeredCourses) {
-            System.out.println(course.code + " - " + course.coursename + " (" + course.credits + " credits)");
+            System.out.println(course.getCode() + " - " + course.coursename + " (" + course.getCredits() + " credits)");
         }
         System.out.println("Total credits: " + currentCredits);
     }
 
     public List<Courses> getAvailableCourses() {
-        return allCourses.stream()
-                .filter(course -> course.semester == currentSemester || course.semester == 0)
+        return Courses.getAllCourses().stream()
+                .filter(course -> course.getSemester() == currentSemester || course.getSemester() == 0)
                 .filter(this::arePrerequisitesMet)
                 .collect(Collectors.toList());
     }
@@ -111,25 +109,24 @@ public class CourseManager {
                 }
             }
             System.out.printf("%-10s %-20s %-15s %-7d %-25s %-10d%n",
-                    course.code,
+                    course.getCode(),
                     course.coursename,
                     course.prof,
-                    course.credits,
+                    course.getCredits(),
                     timings.toString(),
-                    course.semester);
+                    course.getSemester());
         }
     }
 
     public void addGrade(String courseCode, String grade) {
-        Courses course = allCourses.stream()
-                .filter(c -> c.getCode().equals(courseCode))
-                .findFirst()
-                .orElse(null);
-
+        Courses course = Courses.getCourse(courseCode);
         if (course != null) {
             CompletedCourse completedCourse = new CompletedCourse(course, grade);
             completedCourses.put(courseCode, completedCourse);
             registeredCourses.removeIf(c -> c.getCode().equals(courseCode));
+            System.out.println("Grade added successfully for course: " + courseCode);
+        } else {
+            System.out.println("Course not found: " + courseCode);
         }
     }
 
@@ -181,7 +178,7 @@ public class CourseManager {
     }
 
     public List<Courses> getRegisteredCourses() {
-        return registeredCourses;
+        return new ArrayList<>(registeredCourses);
     }
 
     private class CompletedCourse {

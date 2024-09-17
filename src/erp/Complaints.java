@@ -31,8 +31,24 @@ public class Complaints {
         return compId;
     }
 
+    public String getCompName() {
+        return compName;
+    }
+
+    public String getCompDesc() {
+        return compDesc;
+    }
+
+    public String getCompDate() {
+        return compDate;
+    }
+
     public ComplaintStatus getCompStatus() {
         return compStatus;
+    }
+
+    public int getUserid() {
+        return userid;
     }
 
     public void setCompStatus(ComplaintStatus compStatus) {

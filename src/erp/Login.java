@@ -8,6 +8,8 @@ public class Login {
     private HashMap<Integer, Student> studentsMap = new HashMap<>();
     private HashMap<Integer, Professor> professorsMap = new HashMap<>();
     private Scanner scanner = new Scanner(System.in);
+    private static final int ADMIN_ID = 2005;
+    private static final String ADMIN_PASSWORD = "admin123";
 
     public Login() {
         prepopulateStudents();
@@ -138,6 +140,9 @@ public class Login {
     }
 
     private User login(int id, String password) {
+        if (id == ADMIN_ID && password.equals(ADMIN_PASSWORD)) {
+            return new Admin(ADMIN_ID,ADMIN_PASSWORD,"Administrator","Administrator");
+        }
         if (usersMap.containsKey(id)) {
             User user = usersMap.get(id);
             if (password.equals(user.getPassword())) {

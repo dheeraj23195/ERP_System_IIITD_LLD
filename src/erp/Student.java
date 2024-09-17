@@ -33,7 +33,21 @@ public class Student extends User {
     public void addCompletedCourse(Courses course) {
         completedCourses.add(course);
     }
+    public void setName(String name) {
+        this.name = name;
+    }
 
+    public void setPhoneno(long phoneno) {
+        this.phoneno = phoneno;
+    }
+
+    public void setRollno(int rollno) {
+        this.rollno = rollno;
+    }
+
+    public void setSemester(int semester) {
+        this.semester = semester;
+    }
     public static boolean checkCourseCompletion(String course) {
         for (Courses c : completedCourses) {
             if (course.equals(c.getCode())) {
