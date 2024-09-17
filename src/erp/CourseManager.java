@@ -180,6 +180,10 @@ public class CourseManager {
         System.out.printf("CGPA: %.2f%n", calculateCGPA());
     }
 
+    public List<Courses> getRegisteredCourses() {
+        return registeredCourses;
+    }
+
     private class CompletedCourse {
         private Courses course;
         private String grade;
