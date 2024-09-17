@@ -11,7 +11,7 @@ public class StudentInterface {
         while(true) {
             displayMenu();
             int choice = scanner.nextInt();
-            scanner.nextLine(); // Consume newline
+            scanner.nextLine();
 
             switch (choice) {
                 case 1:
@@ -68,7 +68,7 @@ public class StudentInterface {
     private static void handleAddDropCourse(Student student) {
         System.out.println("Do you want to 1) Add 2) Drop a course 3) Go back to Main Menu? : ");
         int choice = scanner.nextInt();
-        scanner.nextLine(); // Consume newline
+        scanner.nextLine();
 
         switch (choice) {
             case 1:
@@ -82,7 +82,6 @@ public class StudentInterface {
                 student.courseManager.dropCourse(dropCourseCode);
                 break;
             case 3:
-                // Do nothing, just return to main menu
                 break;
             default:
                 System.out.println("Invalid choice. Returning to main menu.");
