@@ -18,7 +18,7 @@ public class StudentInterface {
                     Schedule.displaySchedule(student);
                     break;
                 case 2:
-                    student.courseManager.displayGrades();
+                    displayGrades(student);
                     break;
                 case 3:
                     student.courseManager.displayRegisteredCourses();
@@ -58,6 +58,14 @@ public class StudentInterface {
         System.out.println("7) Check Complaint Status");
         System.out.println("8) Log Out");
         System.out.println("9) Exit");
+    }
+
+    private static void displayGrades(Student student) {
+        System.out.println("Enter the semester for which you want to view grades (0 for all semesters): ");
+        int semester = scanner.nextInt();
+        scanner.nextLine();
+
+        student.courseManager.displayGrades(semester);
     }
 
     private static void displayAvailableCourses(Student student) {

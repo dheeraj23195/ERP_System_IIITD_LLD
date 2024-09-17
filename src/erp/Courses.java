@@ -16,6 +16,10 @@ public class Courses {
     public LocalTime endtime;
     public String[] days;
     public int semester;
+    private String syllabus;
+    private int enrollmentLimit;
+    private String officeHours;
+    private boolean graded;
 
     public Courses(String code, String coursename, String prof, int credits, String[] prereq, LocalTime starttime, LocalTime endtime, String[] days, int semester) {
         this.code = code;
@@ -27,6 +31,10 @@ public class Courses {
         this.endtime = endtime;
         this.days = days;
         this.semester = semester;
+        this.syllabus = "";
+        this.enrollmentLimit = 0;
+        this.officeHours = "";
+        this.graded = false;
     }
 
     public static void initializeCourses() {
@@ -99,8 +107,50 @@ public class Courses {
         return code;
     }
 
+    public String getSyllabus() {
+        return syllabus;
+    }
+
+    public void setSyllabus(String syllabus) {
+        this.syllabus = syllabus;
+    }
+
+    public int getEnrollmentLimit() {
+        return enrollmentLimit;
+    }
+
+    public void setEnrollmentLimit(int enrollmentLimit) {
+        this.enrollmentLimit = enrollmentLimit;
+    }
+
+    public String getOfficeHours() {
+        return officeHours;
+    }
+
+    public void setOfficeHours(String officeHours) {
+        this.officeHours = officeHours;
+    }
+
+    public boolean isGraded() {
+        return graded;
+    }
+
+    public void setGraded(boolean graded) {
+        this.graded = graded;
+    }
+
     @Override
     public String toString() {
-        return String.format("Course: %s - %s, Professor: %s, Credits: %d, Semester: %d", code, coursename, prof, credits, semester);
+        return "Course: " + code + " - " + coursename +
+                "\nProfessor: " + prof +
+                "\nCredits: " + credits +
+                "\nSemester: " + semester +
+                "\nTimings: " + starttime + " - " + endtime +
+                "\nDays: " + String.join(", ", days) +
+                "\nPrerequisites: " + String.join(", ", prereq) +
+                "\nSyllabus: " + syllabus +
+                "\nEnrollment Limit: " + enrollmentLimit +
+                "\nOffice Hours: " + officeHours +
+                "\nGraded: " + graded;
     }
 }

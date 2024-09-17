@@ -7,9 +7,9 @@ import java.time.LocalTime;
 import java.util.stream.Collectors;
 
 public class AdminInterface {
-    Scanner sc = new Scanner(System.in);
+    static Scanner sc = new Scanner(System.in);
 
-    public void courses() {
+    public static void courses() {
         while (true) {
             System.out.println("Do you want to: ");
             System.out.println("1) View all Courses");
@@ -49,7 +49,7 @@ public class AdminInterface {
         }
     }
 
-    private void addCourse() {
+    private static void addCourse() {
         System.out.println("Enter course details:");
         System.out.print("Course Code: ");
         String code = sc.nextLine();
@@ -77,7 +77,7 @@ public class AdminInterface {
         System.out.println("Course added successfully!");
     }
 
-    private void deleteCourse() {
+    private static void deleteCourse() {
         System.out.print("Enter the course code to delete: ");
         String courseCode = sc.nextLine();
         if (Courses.removeCourse(courseCode)) {
@@ -87,7 +87,7 @@ public class AdminInterface {
         }
     }
 
-    private boolean updateCourse() {
+    private static boolean updateCourse() {
         System.out.println("Enter the Course ID you would like to update: ");
         String courseCode = sc.nextLine();
         Courses course = Courses.getCourse(courseCode);
@@ -169,11 +169,11 @@ public class AdminInterface {
             System.out.println(course.toString());
         }
     }
-    private Login loginSystem;
+    private static Login loginSystem;
     public AdminInterface(Login loginSystem) {
         this.loginSystem = loginSystem;
     }
-    public void students() {
+    public static void students() {
         while (true) {
             System.out.println("\nStudent Management:");
             System.out.println("1) View All Students");
@@ -206,7 +206,7 @@ public class AdminInterface {
         }
     }
 
-    private void viewAllStudents() {
+    private static void viewAllStudents() {
         List<Student> students = new ArrayList<>(loginSystem.getStudentsMap().values());
         if (students.isEmpty()) {
             System.out.println("No students found.");
@@ -217,7 +217,7 @@ public class AdminInterface {
         }
     }
 
-    private void viewSpecificStudent() {
+    private static void viewSpecificStudent() {
         System.out.print("Enter student ID: ");
         int studentId = sc.nextInt();
         sc.nextLine();
@@ -229,7 +229,7 @@ public class AdminInterface {
         }
     }
 
-    private void displayStudentInfo(Student student) {
+    private static void displayStudentInfo(Student student) {
         System.out.println("\nStudent Information:");
         System.out.println("ID: " + student.getId());
         System.out.println("Name: " + student.getName());
@@ -239,10 +239,11 @@ public class AdminInterface {
         System.out.println("Registered Courses:");
         student.courseManager.displayRegisteredCourses();
         System.out.println("Grades:");
-        student.courseManager.displayGrades();
+        student.courseManager.displayAllGrades();
+        System.out.printf("CGPA: %.2f%n", student.courseManager.calculateCGPA());
     }
 
-    private void updateStudentInfo() {
+    private static void updateStudentInfo() {
         System.out.print("Enter student ID to update: ");
         int studentId = sc.nextInt();
         sc.nextLine();
@@ -279,6 +280,7 @@ public class AdminInterface {
                     System.out.print("Enter new semester: ");
                     int newSemester = sc.nextInt();
                     student.setSemester(newSemester);
+                    System.out.println("Student's semester updated. Registered courses have been cleared.");
                     break;
                 default:
                     System.out.println("Invalid choice.");
@@ -290,14 +292,14 @@ public class AdminInterface {
         }
     }
 
-    private void updateStudentGrades() {
+    private static void updateStudentGrades() {
         System.out.print("Enter student ID to update grades: ");
         int studentId = sc.nextInt();
         sc.nextLine();
         Student student = loginSystem.getStudentsMap().get(studentId);
         if (student != null) {
             System.out.println("Current grades:");
-            student.courseManager.displayGrades();
+            student.courseManager.displayAllGrades();
             System.out.print("Enter course code to update grade: ");
             String courseCode = sc.nextLine();
             System.out.print("Enter new grade: ");
@@ -308,7 +310,7 @@ public class AdminInterface {
             System.out.println("Student not found.");
         }
     }
-    public void complaints() {
+    public static void complaints() {
         while (true) {
             System.out.println("\nComplaint Management:");
             System.out.println("1) View All Complaints");
@@ -337,7 +339,7 @@ public class AdminInterface {
         }
     }
 
-    private void viewAllComplaints() {
+    private static void viewAllComplaints() {
         List<Complaints> allComplaints = new ArrayList<>(ComplaintManager.getAllComplaints());
         if (allComplaints.isEmpty()) {
             System.out.println("No complaints found.");
@@ -346,7 +348,7 @@ public class AdminInterface {
         }
     }
 
-    private void displayComplaints(List<Complaints> complaints) {
+    private static void displayComplaints(List<Complaints> complaints) {
         for (Complaints complaint : complaints) {
             System.out.println("Complaint ID: " + complaint.getCompId());
             System.out.println("Title: " + complaint.getCompName());
@@ -358,7 +360,7 @@ public class AdminInterface {
         }
     }
 
-    private void updateComplaintStatus() {
+    private static void updateComplaintStatus() {
         System.out.print("Enter complaint ID to update: ");
         String complaintId = sc.nextLine();
         Complaints complaint = ComplaintManager.getComplaint(complaintId);
@@ -378,7 +380,7 @@ public class AdminInterface {
         }
     }
 
-    private void filterComplaints() {
+    private static void filterComplaints() {
         System.out.println("Filter by:");
         System.out.println("1) Status");
         System.out.println("2) Date");
@@ -418,7 +420,7 @@ public class AdminInterface {
                 System.out.println("Invalid choice.");
         }
     }
-    public void assignProfessorsToCourses() {
+    public static void assignProfessorsToCourses() {
         while (true) {
             System.out.println("\nAssign Professors to Courses:");
             System.out.println("1) View All Courses and Assigned Professors");
@@ -427,7 +429,7 @@ public class AdminInterface {
             System.out.println("4) Go back to Main Menu");
             System.out.print("Enter your choice: ");
             int choice = sc.nextInt();
-            sc.nextLine(); // Consume newline
+            sc.nextLine();
 
             switch (choice) {
                 case 1:
@@ -447,7 +449,7 @@ public class AdminInterface {
         }
     }
 
-    private void viewAllCoursesAndProfessors() {
+    private static void viewAllCoursesAndProfessors() {
         List<Courses> allCourses = Courses.getAllCourses();
         System.out.println("Courses and Assigned Professors:");
         for (Courses course : allCourses) {
@@ -455,7 +457,7 @@ public class AdminInterface {
         }
     }
 
-    private void assignProfessorToCourse() {
+    private static void assignProfessorToCourse() {
         System.out.print("Enter course code: ");
         String courseCode = sc.nextLine();
         Courses course = Courses.getCourse(courseCode);
@@ -466,7 +468,7 @@ public class AdminInterface {
 
         System.out.print("Enter professor ID: ");
         int professorId = sc.nextInt();
-        sc.nextLine(); // Consume newline
+        sc.nextLine();
         Professor professor = loginSystem.getProfessorsMap().get(professorId);
         if (professor == null) {
             System.out.println("Professor not found.");
@@ -478,7 +480,7 @@ public class AdminInterface {
         System.out.println("Professor " + professor.getName() + " assigned to course " + courseCode);
     }
 
-    private void removeProfessorFromCourse() {
+    private static void removeProfessorFromCourse() {
         System.out.print("Enter course code: ");
         String courseCode = sc.nextLine();
         Courses course = Courses.getCourse(courseCode);
@@ -495,7 +497,6 @@ public class AdminInterface {
         String professorName = course.prof;
         course.prof = null;
 
-        // Find the professor and remove the course from their taught courses
         for (Professor prof : loginSystem.getProfessorsMap().values()) {
             if (prof.getName().equals(professorName)) {
                 prof.removeCourse(courseCode);
@@ -505,7 +506,7 @@ public class AdminInterface {
 
         System.out.println("Professor removed from course " + courseCode);
     }
-    public void adminMenu() {
+    public static void adminMenu() {
         while (true) {
             System.out.println("\nAdmin Menu:");
             System.out.println("1) Manage Courses");
@@ -515,7 +516,7 @@ public class AdminInterface {
             System.out.println("5) Logout");
             System.out.print("Enter your choice: ");
             int choice = sc.nextInt();
-            sc.nextLine(); // Consume newline
+            sc.nextLine();
 
             switch (choice) {
                 case 1:

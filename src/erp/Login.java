@@ -36,7 +36,16 @@ public class Login {
         Professor prof3 = new Professor(2003, "profpass3", "Dr. John von Neumann");
         Professor prof4 = new Professor(2004, "profpass4", "Dr. Grace Hopper");
         Professor prof5 = new Professor(2005, "profpass5", "Dr. Claude Shannon");
-
+        prof1.addCourse("DES101");
+        prof1.addCourse("CSE112");
+        prof2.addCourse("CSE101");
+        prof2.addCourse("CSE111");
+        prof3.addCourse("CSE111");
+        prof3.addCourse("SSH101");
+        prof4.addCourse("COM101");
+        prof4.addCourse("SSH112");
+        prof5.addCourse("MTH100");
+        prof5.addCourse("MTH201");
         addUser(prof1);
         addUser(prof2);
         addUser(prof3);
@@ -94,8 +103,7 @@ public class Login {
                 long phoneNo = scanner.nextLong();
                 System.out.println("Enter your roll number: ");
                 int rollNo = scanner.nextInt();
-                System.out.println("Enter your semester: ");
-                int semester = scanner.nextInt();
+                int semester = 1;
                 scanner.nextLine();
                 signup(userId, password, name, role, phoneNo, rollNo, semester);
                 break;

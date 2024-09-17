@@ -30,6 +30,14 @@ public class Student extends User {
         return semester;
     }
 
+    public List<Courses> getRegisteredCourses() {
+        return courseManager.getRegisteredCourses();
+    }
+
+    public double getCGPA() {
+        return courseManager.calculateCGPA();
+    }
+
     public void addCompletedCourse(Courses course) {
         completedCourses.add(course);
     }
@@ -47,6 +55,7 @@ public class Student extends User {
 
     public void setSemester(int semester) {
         this.semester = semester;
+        this.courseManager.updateSemester(semester);
     }
     public static boolean checkCourseCompletion(String course) {
         for (Courses c : completedCourses) {

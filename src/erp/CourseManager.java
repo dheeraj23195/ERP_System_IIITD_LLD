@@ -119,19 +119,95 @@ public class CourseManager {
     }
 
     public void addGrade(String courseCode, String grade) {
-        Courses course = Courses.getCourse(courseCode);
+        Courses course = registeredCourses.stream()
+                .filter(c -> c.getCode().equals(courseCode))
+                .findFirst()
+                .orElse(null);
         if (course != null) {
             CompletedCourse completedCourse = new CompletedCourse(course, grade);
             completedCourses.put(courseCode, completedCourse);
-            registeredCourses.removeIf(c -> c.getCode().equals(courseCode));
+            course.setGraded(true);
             System.out.println("Grade added successfully for course: " + courseCode);
+
+            checkAndMoveCompletedCourses();
         } else {
-            System.out.println("Course not found: " + courseCode);
+            System.out.println("Course not found in registered courses: " + courseCode);
         }
     }
 
-    public double calculateSGPA() {
-        return calculateGPA(currentSemester);
+    private void checkAndMoveCompletedCourses() {
+        boolean allGraded = registeredCourses.stream().allMatch(Courses::isGraded);
+        if (allGraded) {
+            for (Courses course : registeredCourses) {
+                CompletedCourse completedCourse = completedCourses.get(course.getCode());
+                if (completedCourse == null) {
+                    completedCourse = new CompletedCourse(course, "F");
+                    completedCourses.put(course.getCode(), completedCourse);
+                }
+            }
+            registeredCourses.clear();
+            currentCredits = 0;
+            currentSemester++;
+            System.out.println("All courses for the semester have been graded. Moving to semester " + currentSemester);
+        }
+    }
+    public void updateSemester(int newSemester) {
+        this.currentSemester = newSemester;
+        this.registeredCourses.clear();
+        this.currentCredits = 0;
+    }
+
+    public void displayGrades(int semester) {
+        if (semester == 0) {
+            displayAllGrades();
+            System.out.printf("CGPA: %.2f%n", calculateCGPA());
+        } else {
+            displayGradesForSemester(semester);
+            System.out.printf("SGPA for semester %d: %.2f%n", semester, calculateSGPA(semester));
+            System.out.printf("CGPA: %.2f%n", calculateCGPA());
+        }
+    }
+
+    private void displayGradesForSemester(int semester) {
+        System.out.printf("Completed Courses for Semester %d:%n", semester);
+        System.out.printf("%-10s %-30s %-10s %-10s %-10s%n", "Code", "Course Name", "Credits", "Grade", "Grade Points");
+        System.out.println("-------------------------------------------------------------------------------------");
+
+        for (CompletedCourse course : completedCourses.values()) {
+            if (course.getCourse().getSemester() == semester) {
+                System.out.printf("%-10s %-30s %-10d %-10s %-10.2f%n",
+                        course.getCourse().getCode(),
+                        course.getCourse().coursename,
+                        course.getCourse().getCredits(),
+                        course.getGrade(),
+                        course.getGradePoint());
+            }
+        }
+
+        System.out.println("-------------------------------------------------------------------------------------");
+    }
+
+    public void displayAllGrades() {
+        System.out.println("All Completed Courses:");
+        System.out.printf("%-10s %-30s %-10s %-10s %-10s %-10s%n", "Code", "Course Name", "Credits", "Grade", "Grade Points", "Semester");
+        System.out.println("------------------------------------------------------------------------------------------------");
+
+        for (CompletedCourse course : completedCourses.values()) {
+            System.out.printf("%-10s %-30s %-10d %-10s %-10.2f %-10d%n",
+                    course.getCourse().getCode(),
+                    course.getCourse().coursename,
+                    course.getCourse().getCredits(),
+                    course.getGrade(),
+                    course.getGradePoint(),
+                    course.getCourse().getSemester());
+        }
+
+        System.out.println("------------------------------------------------------------------------------------------------");
+    }
+
+
+    public double calculateSGPA(int semester) {
+        return calculateGPA(semester);
     }
 
     public double calculateCGPA() {
@@ -156,25 +232,6 @@ public class CourseManager {
         }
 
         return totalGradePoints / totalCredits;
-    }
-
-    public void displayGrades() {
-        System.out.println("Completed Courses:");
-        System.out.printf("%-10s %-30s %-10s %-10s %-10s%n", "Code", "Course Name", "Credits", "Grade", "Grade Points");
-        System.out.println("-------------------------------------------------------------------------------------");
-
-        for (CompletedCourse course : completedCourses.values()) {
-            System.out.printf("%-10s %-30s %-10d %-10s %-10.2f%n",
-                    course.getCourse().getCode(),
-                    course.getCourse().coursename,
-                    course.getCourse().getCredits(),
-                    course.getGrade(),
-                    course.getGradePoint());
-        }
-
-        System.out.println("-------------------------------------------------------------------------------------");
-        System.out.printf("SGPA: %.2f%n", calculateSGPA());
-        System.out.printf("CGPA: %.2f%n", calculateCGPA());
     }
 
     public List<Courses> getRegisteredCourses() {
