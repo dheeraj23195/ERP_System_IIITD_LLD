@@ -1,10 +1,10 @@
 package erp;
 
 public class User {
-    private int id;
-    private String password;
-    private String name;
-    private String role;
+    protected int id;
+    protected String password;
+    protected String name;
+    protected String role;
 
     public User(int id, String password, String name, String role) {
         this.id = id;
@@ -23,5 +23,9 @@ public class User {
 
     public String getPassword() {
         return password;
+    }
+
+    public int getId() {
+        return id;
     }
 }
