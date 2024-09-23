@@ -1,9 +1,7 @@
 package erp;
 
-import java.util.ArrayList;
-import java.util.HashMap;
-import java.util.List;
-import java.util.Map;
+import java.time.LocalTime;
+import java.util.*;
 import java.util.stream.Collectors;
 
 public class CourseManager {
@@ -12,12 +10,60 @@ public class CourseManager {
     private Map<String, CompletedCourse> completedCourses;
     private int currentSemester;
     private int currentCredits;
+    private static Scanner sc = new Scanner(System.in);
+    private static Login loginSystem;
 
     public CourseManager(int currentSemester) {
         this.registeredCourses = new ArrayList<>();
         this.completedCourses = new HashMap<>();
         this.currentSemester = currentSemester;
         this.currentCredits = 0;
+    }
+
+    public static void setLoginSystem(Login loginSystem) {
+        CourseManager.loginSystem = loginSystem;
+    }
+
+    public static void addCourse() {
+        System.out.println("Enter course details:");
+        System.out.print("Course Code: ");
+        String code = sc.nextLine();
+        System.out.print("Course Name: ");
+        String name = sc.nextLine();
+        System.out.print("Credits: ");
+        int credits = sc.nextInt();
+        sc.nextLine();
+        System.out.print("Prerequisites (comma-separated, or 'none'): ");
+        String prereqInput = sc.nextLine();
+        String[] prereq = prereqInput.equalsIgnoreCase("none") ? new String[]{} : prereqInput.split(",");
+        System.out.print("Start Time (HH:mm): ");
+        LocalTime startTime = LocalTime.parse(sc.nextLine());
+        System.out.print("End Time (HH:mm): ");
+        LocalTime endTime = LocalTime.parse(sc.nextLine());
+        System.out.print("Days (comma-separated): ");
+        String[] days = sc.nextLine().split(",");
+        System.out.print("Semester: ");
+        int semester = sc.nextInt();
+        sc.nextLine();
+
+        Courses newCourse = new Courses(code, name, credits, prereq, startTime, endTime, days, semester);
+        Courses.addCourse(newCourse);
+        System.out.println("Course added successfully!");
+
+        System.out.print("Do you want to assign a professor to this course? (Y/N): ");
+        String assignProf = sc.nextLine();
+        if (assignProf.equalsIgnoreCase("Y")) {
+            System.out.print("Enter professor ID: ");
+            int profId = sc.nextInt();
+            sc.nextLine();
+            Professor prof = loginSystem.getProfessorsMap().get(profId);
+            if (prof != null) {
+                newCourse.assignProfessor(prof);
+                System.out.println("Professor assigned successfully!");
+            } else {
+                System.out.println("Professor not found. You can assign a professor later.");
+            }
+        }
     }
 
     public boolean addCourse(String courseCode) {
@@ -61,18 +107,6 @@ public class CourseManager {
         return true;
     }
 
-    private boolean arePrerequisitesMet(Courses course) {
-        if (course.getPrereq() == null || course.getPrereq().length == 0) {
-            return true;
-        }
-        for (String prereq : course.getPrereq()) {
-            if (!Student.checkCourseCompletion(prereq)) {
-                return false;
-            }
-        }
-        return true;
-    }
-
     public void displayRegisteredCourses() {
         System.out.println("Registered Courses:");
         if (registeredCourses.isEmpty()) {
@@ -90,6 +124,18 @@ public class CourseManager {
                 .filter(course -> course.getSemester() == currentSemester || course.getSemester() == 0)
                 .filter(this::arePrerequisitesMet)
                 .collect(Collectors.toList());
+    }
+
+    private boolean arePrerequisitesMet(Courses course) {
+        if (course.getPrereq() == null || course.getPrereq().length == 0) {
+            return true;
+        }
+        for (String prereq : course.getPrereq()) {
+            if (!Student.checkCourseCompletion(prereq)) {
+                return false;
+            }
+        }
+        return true;
     }
 
     public void displayCoursesTable(List<Courses> coursesList) {
@@ -111,7 +157,7 @@ public class CourseManager {
             System.out.printf("%-10s %-20s %-15s %-7d %-25s %-10d%n",
                     course.getCode(),
                     course.coursename,
-                    course.prof,
+                    course.getProfessorName(),
                     course.getCredits(),
                     timings.toString(),
                     course.getSemester());
@@ -151,6 +197,7 @@ public class CourseManager {
             System.out.println("All courses for the semester have been graded. Moving to semester " + currentSemester);
         }
     }
+
     public void updateSemester(int newSemester) {
         this.currentSemester = newSemester;
         this.registeredCourses.clear();
@@ -204,7 +251,6 @@ public class CourseManager {
 
         System.out.println("------------------------------------------------------------------------------------------------");
     }
-
 
     public double calculateSGPA(int semester) {
         return calculateGPA(semester);

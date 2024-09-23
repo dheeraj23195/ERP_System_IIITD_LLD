@@ -27,7 +27,7 @@ public class Schedule {
             for (String day : DAYS) {
                 Courses course = findCourse(registeredCourses, day, currentTime);
                 if (course != null) {
-                    System.out.printf("%-20s", course.code + " - " + course.prof);
+                    System.out.printf("%-20s", course.code + " - " + course.getAssignedProfessor());
                 } else {
                     System.out.printf("%-20s", "");
                 }

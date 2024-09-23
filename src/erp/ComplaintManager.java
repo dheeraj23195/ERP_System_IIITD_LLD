@@ -1,8 +1,8 @@
 package erp;
 
+import java.util.Collection;
 import java.util.HashMap;
 import java.util.Map;
-import java.util.Collection;
 
 public class ComplaintManager {
     private static Map<String, Complaints> complaintsMap = new HashMap<>();

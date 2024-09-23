@@ -1,8 +1,8 @@
 package erp;
 
+import java.time.LocalTime;
 import java.util.List;
 import java.util.Scanner;
-import java.time.LocalTime;
 import java.util.stream.Collectors;
 
 public class ProfessorInterface {

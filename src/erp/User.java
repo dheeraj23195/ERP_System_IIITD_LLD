@@ -1,6 +1,6 @@
 package erp;
 
-public class User {
+public abstract class User {
     protected int id;
     protected String password;
     protected String name;
@@ -28,4 +28,6 @@ public class User {
     public int getId() {
         return id;
     }
+    public abstract void displayInfo();
+    public abstract String getDetails();
 }

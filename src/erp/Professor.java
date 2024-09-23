@@ -33,4 +33,18 @@ public class Professor extends User {
                 ", taughtCourses=" + taughtCourses +
                 '}';
     }
+    @Override
+    public void displayInfo() {
+        System.out.println("Professor: " + getName() + " (ID: " + getId() + ")");
+        System.out.println("Courses taught: " + String.join(", ", taughtCourses));
+    }
+
+    @Override
+    public String getDetails() {
+        return "Professor{" +
+                "id=" + getId() +
+                ", name='" + getName() + '\'' +
+                ", taughtCourses=" + taughtCourses +
+                '}';
+    }
 }

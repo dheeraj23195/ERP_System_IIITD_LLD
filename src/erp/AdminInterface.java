@@ -1,13 +1,19 @@
 package erp;
+
 import java.time.LocalDate;
-import java.util.Scanner;
-import java.util.List;
-import java.util.ArrayList;
 import java.time.LocalTime;
+import java.util.ArrayList;
+import java.util.List;
+import java.util.Scanner;
 import java.util.stream.Collectors;
 
 public class AdminInterface {
     static Scanner sc = new Scanner(System.in);
+    private static Login loginSystem;
+
+    public AdminInterface(Login loginSystem) {
+        AdminInterface.loginSystem = loginSystem;
+    }
 
     public static void courses() {
         while (true) {
@@ -55,8 +61,6 @@ public class AdminInterface {
         String code = sc.nextLine();
         System.out.print("Course Name: ");
         String name = sc.nextLine();
-        System.out.print("Professor: ");
-        String prof = sc.nextLine();
         System.out.print("Credits: ");
         int credits = sc.nextInt();
         sc.nextLine();
@@ -71,10 +75,17 @@ public class AdminInterface {
         String[] days = sc.nextLine().split(",");
         System.out.print("Semester: ");
         int semester = sc.nextInt();
+        sc.nextLine();
 
-        Courses newCourse = new Courses(code, name, prof, credits, prereq, startTime, endTime, days, semester);
+        Courses newCourse = new Courses(code, name, credits, prereq, startTime, endTime, days, semester);
         Courses.addCourse(newCourse);
         System.out.println("Course added successfully!");
+
+        System.out.print("Do you want to assign a professor to this course? (Y/N): ");
+        String assignProf = sc.nextLine();
+        if (assignProf.equalsIgnoreCase("Y")) {
+            assignProfessorToCourse(newCourse);
+        }
     }
 
     private static void deleteCourse() {
@@ -111,7 +122,7 @@ public class AdminInterface {
             System.out.println("9. Finish Updating");
 
             int choice = sc.nextInt();
-            sc.nextLine(); // Consume newline
+            sc.nextLine();
 
             switch (choice) {
                 case 1:
@@ -120,9 +131,7 @@ public class AdminInterface {
                     course.coursename = newName;
                     break;
                 case 2:
-                    System.out.println("Enter new professor name: ");
-                    String newProf = sc.nextLine();
-                    course.prof = newProf;
+                    assignProfessorToCourse(course);
                     break;
                 case 3:
                     System.out.println("Enter new credit value: ");
@@ -169,10 +178,7 @@ public class AdminInterface {
             System.out.println(course.toString());
         }
     }
-    private static Login loginSystem;
-    public AdminInterface(Login loginSystem) {
-        this.loginSystem = loginSystem;
-    }
+
     public static void students() {
         while (true) {
             System.out.println("\nStudent Management:");
@@ -310,6 +316,7 @@ public class AdminInterface {
             System.out.println("Student not found.");
         }
     }
+
     public static void complaints() {
         while (true) {
             System.out.println("\nComplaint Management:");
@@ -379,7 +386,6 @@ public class AdminInterface {
             System.out.println("Complaint not found.");
         }
     }
-
     private static void filterComplaints() {
         System.out.println("Filter by:");
         System.out.println("1) Status");
@@ -420,6 +426,7 @@ public class AdminInterface {
                 System.out.println("Invalid choice.");
         }
     }
+
     public static void assignProfessorsToCourses() {
         while (true) {
             System.out.println("\nAssign Professors to Courses:");
@@ -453,7 +460,7 @@ public class AdminInterface {
         List<Courses> allCourses = Courses.getAllCourses();
         System.out.println("Courses and Assigned Professors:");
         for (Courses course : allCourses) {
-            System.out.println(course.getCode() + " - " + course.coursename + " : " + course.prof);
+            System.out.println(course.getCode() + " - " + course.coursename + " : " + course.getProfessorName());
         }
     }
 
@@ -466,6 +473,10 @@ public class AdminInterface {
             return;
         }
 
+        assignProfessorToCourse(course);
+    }
+
+    private static void assignProfessorToCourse(Courses course) {
         System.out.print("Enter professor ID: ");
         int professorId = sc.nextInt();
         sc.nextLine();
@@ -475,9 +486,8 @@ public class AdminInterface {
             return;
         }
 
-        course.prof = professor.getName();
-        professor.addCourse(courseCode);
-        System.out.println("Professor " + professor.getName() + " assigned to course " + courseCode);
+        course.assignProfessor(professor);
+        System.out.println("Professor " + professor.getName() + " assigned to course " + course.getCode());
     }
 
     private static void removeProfessorFromCourse() {
@@ -489,23 +499,18 @@ public class AdminInterface {
             return;
         }
 
-        if (course.prof == null || course.prof.isEmpty()) {
+        Professor assignedProfessor = course.getAssignedProfessor();
+        if (assignedProfessor == null) {
             System.out.println("No professor assigned to this course.");
             return;
         }
 
-        String professorName = course.prof;
-        course.prof = null;
+        String professorName = assignedProfessor.getName();
+        course.removeProfessor();
 
-        for (Professor prof : loginSystem.getProfessorsMap().values()) {
-            if (prof.getName().equals(professorName)) {
-                prof.removeCourse(courseCode);
-                break;
-            }
-        }
-
-        System.out.println("Professor removed from course " + courseCode);
+        System.out.println("Professor " + professorName + " removed from course " + courseCode);
     }
+
     public static void adminMenu() {
         while (true) {
             System.out.println("\nAdmin Menu:");

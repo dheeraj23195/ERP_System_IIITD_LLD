@@ -36,21 +36,45 @@ public class Login {
         Professor prof3 = new Professor(2003, "profpass3", "Dr. John von Neumann");
         Professor prof4 = new Professor(2004, "profpass4", "Dr. Grace Hopper");
         Professor prof5 = new Professor(2005, "profpass5", "Dr. Claude Shannon");
-        prof1.addCourse("DES101");
-        prof1.addCourse("CSE112");
-        prof2.addCourse("CSE101");
-        prof2.addCourse("CSE111");
-        prof3.addCourse("CSE111");
-        prof3.addCourse("SSH101");
-        prof4.addCourse("COM101");
-        prof4.addCourse("SSH112");
-        prof5.addCourse("MTH100");
-        prof5.addCourse("MTH201");
+
+        assignCourseToProfessor("DES101", prof1);
+        assignCourseToProfessor("CSE101", prof2);
+        assignCourseToProfessor("CSE111", prof3);
+        assignCourseToProfessor("COM101", prof4);
+        assignCourseToProfessor("MTH100", prof5);
+
+        assignCourseToProfessor("CSE112", prof1);
+        assignCourseToProfessor("SSH101", prof3);
+        assignCourseToProfessor("SSH112", prof4);
+        assignCourseToProfessor("MTH201", prof5);
+        assignCourseToProfessor("ECO101", prof1);
+
+        assignCourseToProfessor("CP1", prof2);
+        assignCourseToProfessor("SG", prof3);
+        assignCourseToProfessor("CW", prof4);
+
+        assignCourseToProfessor("CSE201", prof5);
+        assignCourseToProfessor("MTH203", prof1);
+        assignCourseToProfessor("SSH201", prof2);
+        assignCourseToProfessor("SSH202", prof3);
+        assignCourseToProfessor("SSH211", prof4);
+        assignCourseToProfessor("MTH211", prof5);
+        assignCourseToProfessor("CSE211", prof1);
+
         addUser(prof1);
         addUser(prof2);
         addUser(prof3);
         addUser(prof4);
         addUser(prof5);
+    }
+
+    private void assignCourseToProfessor(String courseCode, Professor professor) {
+        Courses course = Courses.getCourse(courseCode);
+        if (course != null) {
+            course.assignProfessor(professor);
+        } else {
+            System.out.println("Course " + courseCode + " not found.");
+        }
     }
 
     private void addUser(User user) {
@@ -140,7 +164,8 @@ public class Login {
             newUser = new Professor(id, password, name);
             professorsMap.put(id, (Professor) newUser);
         } else {
-            newUser = new User(id, password, name, role);
+            System.out.println("Invalid role. Cannot create user.");
+            return false;
         }
         usersMap.put(id, newUser);
         System.out.println("Sign up successful. Please login.");
@@ -149,7 +174,7 @@ public class Login {
 
     private User login(int id, String password) {
         if (id == ADMIN_ID && password.equals(ADMIN_PASSWORD)) {
-            return new Admin(ADMIN_ID,ADMIN_PASSWORD,"Administrator","Administrator");
+            return new Admin(ADMIN_ID, ADMIN_PASSWORD, "Administrator", "Administrator");
         }
         if (usersMap.containsKey(id)) {
             User user = usersMap.get(id);

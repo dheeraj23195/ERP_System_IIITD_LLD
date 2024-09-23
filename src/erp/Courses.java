@@ -9,7 +9,7 @@ public class Courses {
 
     public String code;
     public String coursename;
-    public String prof;
+    private Professor assignedProfessor;
     public int credits;
     public String[] prereq;
     public LocalTime starttime;
@@ -21,10 +21,9 @@ public class Courses {
     private String officeHours;
     private boolean graded;
 
-    public Courses(String code, String coursename, String prof, int credits, String[] prereq, LocalTime starttime, LocalTime endtime, String[] days, int semester) {
+    public Courses(String code, String coursename, int credits, String[] prereq, LocalTime starttime, LocalTime endtime, String[] days, int semester) {
         this.code = code;
         this.coursename = coursename;
-        this.prof = prof;
         this.credits = credits;
         this.prereq = prereq;
         this.starttime = starttime;
@@ -38,42 +37,51 @@ public class Courses {
     }
 
     public static void initializeCourses() {
-        String[] professors = {
-                "Dr. Alan Turing",
-                "Dr. Ada Lovelace",
-                "Dr. John von Neumann",
-                "Dr. Grace Hopper",
-                "Dr. Claude Shannon"
-        };
+        addCourse(new Courses("DES101", "HCI", 4, new String[]{}, LocalTime.of(9, 0), LocalTime.of(10, 30), new String[]{"Mon", "Wed"}, 1));
+        addCourse(new Courses("CSE101", "IP", 4, new String[]{}, LocalTime.of(11, 0), LocalTime.of(12, 30), new String[]{"Tue", "Thu"}, 1));
+        addCourse(new Courses("CSE111", "DC", 4, new String[]{}, LocalTime.of(14, 0), LocalTime.of(15, 30), new String[]{"Mon", "Wed"}, 1));
+        addCourse(new Courses("COM101", "COM", 4, new String[]{}, LocalTime.of(16, 0), LocalTime.of(17, 30), new String[]{"Tue", "Thu"}, 1));
+        addCourse(new Courses("MTH100", "LA", 4, new String[]{}, LocalTime.of(9, 0), LocalTime.of(10, 30), new String[]{"Tue", "Thu"}, 1));
 
-        addCourse(new Courses("DES101", "HCI", professors[0], 4, new String[]{}, LocalTime.of(9, 0), LocalTime.of(10, 30), new String[]{"Mon", "Wed"}, 1));
-        addCourse(new Courses("CSE101", "IP", professors[1], 4, new String[]{}, LocalTime.of(11, 0), LocalTime.of(12, 30), new String[]{"Tue", "Thu"}, 1));
-        addCourse(new Courses("CSE111", "DC", professors[2], 4, new String[]{}, LocalTime.of(14, 0), LocalTime.of(15, 30), new String[]{"Mon", "Wed"}, 1));
-        addCourse(new Courses("COM101", "COM", professors[3], 4, new String[]{}, LocalTime.of(16, 0), LocalTime.of(17, 30), new String[]{"Tue", "Thu"}, 1));
-        addCourse(new Courses("MTH100", "LA", professors[4], 4, new String[]{}, LocalTime.of(9, 0), LocalTime.of(10, 30), new String[]{"Tue", "Thu"}, 1));
+        addCourse(new Courses("CSE112", "CO", 4, new String[]{"CSE111"}, LocalTime.of(11, 0), LocalTime.of(12, 30), new String[]{"Mon", "Wed"}, 2));
+        addCourse(new Courses("CSE121", "DSA", 4, new String[]{"CSE101"}, LocalTime.of(14, 0), LocalTime.of(15, 30), new String[]{"Tue", "Thu"}, 2));
+        addCourse(new Courses("SSH101", "CTRSS", 4, new String[]{}, LocalTime.of(16, 0), LocalTime.of(17, 30), new String[]{"Mon", "Wed"}, 2));
+        addCourse(new Courses("SSH112", "ISA", 4, new String[]{}, LocalTime.of(9, 0), LocalTime.of(10, 30), new String[]{"Mon", "Wed"}, 2));
+        addCourse(new Courses("MTH201", "PNS", 4, new String[]{"MTH100"}, LocalTime.of(11, 0), LocalTime.of(12, 30), new String[]{"Tue", "Thu"}, 2));
+        addCourse(new Courses("ECO101", "MB", 4, new String[]{}, LocalTime.of(14, 0), LocalTime.of(15, 30), new String[]{"Mon", "Wed"}, 2));
 
-        addCourse(new Courses("CSE112", "CO", professors[0], 4, new String[]{"CSE111"}, LocalTime.of(11, 0), LocalTime.of(12, 30), new String[]{"Mon", "Wed"}, 2));
-        addCourse(new Courses("CSE111", "DSA", professors[1], 4, new String[]{"CSE101"}, LocalTime.of(14, 0), LocalTime.of(15, 30), new String[]{"Tue", "Thu"}, 2));
-        addCourse(new Courses("SSH101", "CTRSS", professors[2], 4, new String[]{}, LocalTime.of(16, 0), LocalTime.of(17, 30), new String[]{"Mon", "Wed"}, 2));
-        addCourse(new Courses("SSH112", "ISA", professors[3], 4, new String[]{}, LocalTime.of(9, 0), LocalTime.of(10, 30), new String[]{"Mon", "Wed"}, 2));
-        addCourse(new Courses("MTH201", "PNS", professors[4], 4, new String[]{"MTH100"}, LocalTime.of(11, 0), LocalTime.of(12, 30), new String[]{"Tue", "Thu"}, 2));
-        addCourse(new Courses("ECO101", "MB", professors[0], 4, new String[]{}, LocalTime.of(14, 0), LocalTime.of(15, 30), new String[]{"Mon", "Wed"}, 2));
+        addCourse(new Courses("CP1", "CP1", 2, new String[]{}, LocalTime.of(16, 0), LocalTime.of(17, 0), new String[]{"Fri"}, 0));
+        addCourse(new Courses("SG", "SG", 2, new String[]{}, LocalTime.of(17, 0), LocalTime.of(18, 0), new String[]{"Fri"}, 0));
+        addCourse(new Courses("CW", "CW", 2, new String[]{}, LocalTime.of(18, 0), LocalTime.of(19, 0), new String[]{"Fri"}, 0));
 
-        addCourse(new Courses("CP1", "CP1", professors[1], 2, new String[]{}, LocalTime.of(16, 0), LocalTime.of(17, 0), new String[]{"Fri"}, 0));
-        addCourse(new Courses("SG", "SG", professors[2], 2, new String[]{}, LocalTime.of(17, 0), LocalTime.of(18, 0), new String[]{"Fri"}, 0));
-        addCourse(new Courses("CW", "CW", professors[3], 2, new String[]{}, LocalTime.of(18, 0), LocalTime.of(19, 0), new String[]{"Fri"}, 0));
-
-        addCourse(new Courses("CSE201", "AP", professors[4], 4, new String[]{"CSE111"}, LocalTime.of(9, 0), LocalTime.of(10, 30), new String[]{"Mon", "Wed"}, 3));
-        addCourse(new Courses("MTH203", "M-III", professors[0], 4, new String[]{"MTH201"}, LocalTime.of(11, 0), LocalTime.of(12, 30), new String[]{"Tue", "Thu"}, 3));
-        addCourse(new Courses("SSH201", "RMSSD", professors[1], 4, new String[]{}, LocalTime.of(14, 0), LocalTime.of(15, 30), new String[]{"Mon", "Wed"}, 3));
-        addCourse(new Courses("SSH202", "PASSP", professors[2], 4, new String[]{}, LocalTime.of(16, 0), LocalTime.of(17, 30), new String[]{"Tue", "Thu"}, 3));
-        addCourse(new Courses("SSH211", "SSP", professors[3], 4, new String[]{}, LocalTime.of(9, 0), LocalTime.of(10, 30), new String[]{"Tue", "Thu"}, 3));
-        addCourse(new Courses("MTH211", "DM", professors[4], 4, new String[]{"MTH100"}, LocalTime.of(11, 0), LocalTime.of(12, 30), new String[]{"Mon", "Wed"}, 3));
-        addCourse(new Courses("CSE211", "OS", professors[0], 4, new String[]{"CSE112"}, LocalTime.of(14, 0), LocalTime.of(15, 30), new String[]{"Tue", "Thu"}, 3));
+        addCourse(new Courses("CSE201", "AP", 4, new String[]{"CSE121"}, LocalTime.of(9, 0), LocalTime.of(10, 30), new String[]{"Mon", "Wed"}, 3));
+        addCourse(new Courses("MTH203", "M-III", 4, new String[]{"MTH201"}, LocalTime.of(11, 0), LocalTime.of(12, 30), new String[]{"Tue", "Thu"}, 3));
+        addCourse(new Courses("SSH201", "RMSSD", 4, new String[]{}, LocalTime.of(14, 0), LocalTime.of(15, 30), new String[]{"Mon", "Wed"}, 3));
+        addCourse(new Courses("SSH202", "PASSP", 4, new String[]{}, LocalTime.of(16, 0), LocalTime.of(17, 30), new String[]{"Tue", "Thu"}, 3));
+        addCourse(new Courses("SSH211", "SSP", 4, new String[]{}, LocalTime.of(9, 0), LocalTime.of(10, 30), new String[]{"Tue", "Thu"}, 3));
+        addCourse(new Courses("MTH211", "DM", 4, new String[]{"MTH100"}, LocalTime.of(11, 0), LocalTime.of(12, 30), new String[]{"Mon", "Wed"}, 3));
+        addCourse(new Courses("CSE211", "OS", 4, new String[]{"CSE112"}, LocalTime.of(14, 0), LocalTime.of(15, 30), new String[]{"Tue", "Thu"}, 3));
     }
 
     public static void addCourse(Courses course) {
         allCourses.add(course);
+    }
+
+    public void assignProfessor(Professor professor) {
+        if (this.assignedProfessor == null) {
+            this.assignedProfessor = professor;
+            professor.addCourse(this.code);
+        } else {
+            System.out.println("Course " + this.code + " already has an assigned professor.");
+        }
+    }
+
+    public Professor getAssignedProfessor() {
+        return assignedProfessor;
+    }
+
+    public String getProfessorName() {
+        return (assignedProfessor != null) ? assignedProfessor.getName() : "Not Assigned";
     }
 
     public static boolean removeCourse(String courseCode) {
@@ -142,7 +150,7 @@ public class Courses {
     @Override
     public String toString() {
         return "Course: " + code + " - " + coursename +
-                "\nProfessor: " + prof +
+                "\nProfessor: " + getProfessorName() +
                 "\nCredits: " + credits +
                 "\nSemester: " + semester +
                 "\nTimings: " + starttime + " - " + endtime +
@@ -152,5 +160,9 @@ public class Courses {
                 "\nEnrollment Limit: " + enrollmentLimit +
                 "\nOffice Hours: " + officeHours +
                 "\nGraded: " + graded;
+    }
+
+    public void removeProfessor() {
+        this.assignedProfessor = null;
     }
 }

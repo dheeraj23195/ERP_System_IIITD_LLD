@@ -3,7 +3,7 @@ package erp;
 import java.util.ArrayList;
 import java.util.List;
 
-public class Student extends User {
+public class Student extends User implements Gradable,Schedulable{
     private long phoneno;
     private int rollno;
     private int semester;
@@ -52,6 +52,10 @@ public class Student extends User {
     public void setRollno(int rollno) {
         this.rollno = rollno;
     }
+    @Override
+    public void displaySchedule() {
+        Schedule.displaySchedule(this);
+    }
 
     public void setSemester(int semester) {
         this.semester = semester;
@@ -64,5 +68,34 @@ public class Student extends User {
             }
         }
         return false;
+    }
+    @Override
+    public void displayInfo() {
+        System.out.println("Student: " + getName() + " (ID: " + getId() + ")");
+        System.out.println("Roll No: " + rollno + ", Semester: " + semester);
+    }
+
+    @Override
+    public String getDetails() {
+        return "Student{" +
+                "id=" + getId() +
+                ", name='" + getName() + '\'' +
+                ", rollno=" + rollno +
+                ", semester=" + semester +
+                '}';
+    }
+    @Override
+    public void addGrade(String courseCode, String grade) {
+        courseManager.addGrade(courseCode, grade);
+    }
+
+    @Override
+    public void displayGrades(int semester) {
+        courseManager.displayGrades(semester);
+    }
+
+    @Override
+    public double calculateGPA() {
+        return courseManager.calculateCGPA();
     }
 }
