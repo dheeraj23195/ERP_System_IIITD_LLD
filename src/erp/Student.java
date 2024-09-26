@@ -2,6 +2,7 @@ package erp;
 
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Map;
 
 public class Student extends User implements Gradable,Schedulable{
     private long phoneno;
@@ -9,6 +10,7 @@ public class Student extends User implements Gradable,Schedulable{
     private int semester;
     CourseManager courseManager;
     private static List<Courses> completedCourses = new ArrayList<>();
+    private static List<CourseManager.CompletedCourse> courseasTA=new ArrayList<CourseManager.CompletedCourse>();
 
     public Student(int id, String password, String name, String role, long phoneno, int rollno, int semester) {
         super(id, password, name, role);
@@ -34,6 +36,10 @@ public class Student extends User implements Gradable,Schedulable{
         return courseManager.getRegisteredCourses();
     }
 
+    public Map<String, CourseManager.CompletedCourse> getCompletedCourses() {
+        return courseManager.getCompletedCourses();
+    }
+
     public double getCGPA() {
         return courseManager.calculateCGPA();
     }
@@ -56,7 +62,9 @@ public class Student extends User implements Gradable,Schedulable{
     public void displaySchedule() {
         Schedule.displaySchedule(this);
     }
-
+    public void addCourseforTA(CourseManager.CompletedCourse course) {
+        courseasTA.add(course);
+    }
     public void setSemester(int semester) {
         this.semester = semester;
         this.courseManager.updateSemester(semester);

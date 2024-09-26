@@ -280,11 +280,13 @@ public class CourseManager {
         return totalGradePoints / totalCredits;
     }
 
+    public Map<String, CompletedCourse> getCompletedCourses() {return this.completedCourses;}
+
     public List<Courses> getRegisteredCourses() {
         return new ArrayList<>(registeredCourses);
     }
 
-    private class CompletedCourse {
+    class CompletedCourse {
         private Courses course;
         private String grade;
 
