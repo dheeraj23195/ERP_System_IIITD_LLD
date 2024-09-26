@@ -130,4 +130,3 @@ If you'd like to contribute to the IIITD ERP System, please fork the repository 
 
 ---
 
-This version includes the link to your repository, making it easy for users to clone and contribute to the project. You can further modify the link to point to the correct `LICENSE` file if applicable.
