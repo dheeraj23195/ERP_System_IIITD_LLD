@@ -1,9 +1,6 @@
 package erp;
 
-import java.util.ArrayList;
-import java.util.List;
-import java.util.Map;
-import java.util.Scanner;
+import java.util.*;
 
 public class StudentInterface {
     private static Scanner scanner = new Scanner(System.in);
@@ -66,28 +63,33 @@ public class StudentInterface {
         System.out.println("10) Exit");
     }
 
-    private static boolean applyForTAship(Student student) {
+    public static boolean applyForTAship(Student student) {
         System.out.println("Courses available for TAship: ");
-        Map<String, CourseManager.CompletedCourse> availcourses;
-        availcourses = (Map<String, CourseManager.CompletedCourse>) new ArrayList<>();
-        Map<String, CourseManager.CompletedCourse> helparr=student.courseManager.getCompletedCourses();
-        for(Map.Entry<String, CourseManager.CompletedCourse> entry : helparr.entrySet()) {
+        Map<String, CourseManager.CompletedCourse> availableCourses = new HashMap<>();
+        Map<String, CourseManager.CompletedCourse> completedCourses = student.getCourseManager().getCompletedCourses();
+
+        for (Map.Entry<String, CourseManager.CompletedCourse> entry : completedCourses.entrySet()) {
             CourseManager.CompletedCourse course = entry.getValue();
-            if (course.getGradePoint()>=8.0){
+            if (course.getGradePoint() >= 8.0) {
                 System.out.println(entry.getKey());
-                availcourses.put(entry.getKey(), course);
+                availableCourses.put(entry.getKey(), course);
             }
         }
-        String CourseCode=scanner.next();
-        if(!availcourses.containsKey(CourseCode)){
-            System.out.println("Sorry Course is unavailable for TAShip");
+
+        if (availableCourses.isEmpty()) {
+            System.out.println("No courses available for TAship.");
             return false;
         }
-        CourseManager.CompletedCourse selectedCourse = availcourses.get(CourseCode);
-        int currentSemester = student.getSemester();
-        //student.addCourseForTA(selectedCourse, currentSemester);
-        System.out.println("Successfully applied for TAship in course: " + CourseCode);
-        return true;
+
+        System.out.print("Enter the course code you want to apply for: ");
+        String courseCode = scanner.next();
+
+        if (!availableCourses.containsKey(courseCode)) {
+            System.out.println("Sorry, the course is unavailable for TAship.");
+            return false;
+        }
+
+        return student.applyForTA(courseCode);
     }
 
     private static void displayGrades(Student student) {

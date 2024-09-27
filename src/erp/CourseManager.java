@@ -198,6 +198,11 @@ public class CourseManager {
         }
     }
 
+    public void addCompletedCourse(Courses course, String grade) {
+        CompletedCourse completedCourse = new CompletedCourse(course, grade);
+        completedCourses.put(course.getCode(), completedCourse);
+    }
+
     public void updateSemester(int newSemester) {
         this.currentSemester = newSemester;
         this.registeredCourses.clear();

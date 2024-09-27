@@ -99,6 +99,10 @@ public class Student extends User implements Gradable,Schedulable{
         return false;
     }
 
+    public CourseManager getCourseManager() {
+        return courseManager;
+    }
+
 
     class TAApplication {
         private Student student;

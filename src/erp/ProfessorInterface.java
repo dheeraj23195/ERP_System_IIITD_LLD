@@ -20,6 +20,9 @@ public class ProfessorInterface {
             System.out.println("1) List all my Courses");
             System.out.println("2) Update my Course");
             System.out.println("3) View Enrolled Students");
+            System.out.println("4) View TA Applications");
+            System.out.println("5) Approve TA Applications");
+            System.out.println("6) View Approved TAs");
             System.out.println("0) Exit");
             System.out.print("Enter your choice: ");
             int choice = scanner.nextInt();
@@ -34,6 +37,15 @@ public class ProfessorInterface {
                     break;
                 case 3:
                     viewEnrolledStudents(prof);
+                    break;
+                case 4:
+                    viewTAApplications(prof);
+                    break;
+                case 5:
+                    approveTAApplications(prof);
+                    break;
+                case 6:
+                    viewApprovedTAs(prof);
                     break;
                 case 0:
                     return;
@@ -209,6 +221,120 @@ public class ProfessorInterface {
             student.courseManager.addGrade(courseCode, grade);
         }
         System.out.println("All students graded for course " + courseCode);
+    }
+    private void viewTAApplications(Professor prof) {
+        System.out.println("Select a course to view TA applications:");
+        List<String> taughtCourses = prof.getTaughtCourses();
+        for (int i = 0; i < taughtCourses.size(); i++) {
+            System.out.println((i + 1) + ") " + taughtCourses.get(i));
+        }
+        System.out.print("Enter the number of the course: ");
+        int courseChoice = scanner.nextInt();
+        scanner.nextLine(); // Consume newline
+
+        if (courseChoice < 1 || courseChoice > taughtCourses.size()) {
+            System.out.println("Invalid course number.");
+            return;
+        }
+
+        String selectedCourseCode = taughtCourses.get(courseChoice - 1);
+        List<Student.TAApplication> applications = Student.getTAApplications().stream()
+                .filter(app -> app.getCourseCode().equals(selectedCourseCode) && !app.isApproved())
+                .collect(Collectors.toList());
+
+        if (applications.isEmpty()) {
+            System.out.println("No pending TA applications for " + selectedCourseCode);
+            return;
+        }
+
+        System.out.println("Pending TA Applications for " + selectedCourseCode + ":");
+        for (Student.TAApplication app : applications) {
+            Student student = app.getStudent();
+            System.out.println("Student: " + student.getName() + " (ID: " + student.getId() + ")");
+        }
+    }
+
+    private void approveTAApplications(Professor prof) {
+        System.out.println("Select a course to approve TA applications:");
+        List<String> taughtCourses = prof.getTaughtCourses();
+        for (int i = 0; i < taughtCourses.size(); i++) {
+            System.out.println((i + 1) + ") " + taughtCourses.get(i));
+        }
+        System.out.print("Enter the number of the course: ");
+        int courseChoice = scanner.nextInt();
+        scanner.nextLine(); // Consume newline
+
+        if (courseChoice < 1 || courseChoice > taughtCourses.size()) {
+            System.out.println("Invalid course number.");
+            return;
+        }
+
+        String selectedCourseCode = taughtCourses.get(courseChoice - 1);
+        List<Student.TAApplication> applications = Student.getTAApplications().stream()
+                .filter(app -> app.getCourseCode().equals(selectedCourseCode) && !app.isApproved())
+                .collect(Collectors.toList());
+
+        if (applications.isEmpty()) {
+            System.out.println("No pending TA applications for " + selectedCourseCode);
+            return;
+        }
+
+        System.out.println("Pending TA Applications for " + selectedCourseCode + ":");
+        for (int i = 0; i < applications.size(); i++) {
+            Student.TAApplication app = applications.get(i);
+            Student student = app.getStudent();
+            System.out.println((i + 1) + ") " + student.getName() + " (ID: " + student.getId() + ")");
+        }
+
+        System.out.print("Enter the number of the application to approve (0 to cancel): ");
+        int approveChoice = scanner.nextInt();
+        scanner.nextLine(); // Consume newline
+
+        if (approveChoice == 0) {
+            return;
+        }
+
+        if (approveChoice < 1 || approveChoice > applications.size()) {
+            System.out.println("Invalid application number.");
+            return;
+        }
+
+        Student.TAApplication selectedApp = applications.get(approveChoice - 1);
+        selectedApp.setApproved(true);
+        TeachingAss ta = new TeachingAss(selectedApp.getStudent());
+        ta.assignCourse(selectedCourseCode);
+        System.out.println("TA application approved for student " + ta.getName() + " in course " + selectedCourseCode);
+    }
+
+    private void viewApprovedTAs(Professor prof) {
+        System.out.println("Select a course to view approved TAs:");
+        List<String> taughtCourses = prof.getTaughtCourses();
+        for (int i = 0; i < taughtCourses.size(); i++) {
+            System.out.println((i + 1) + ") " + taughtCourses.get(i));
+        }
+        System.out.print("Enter the number of the course: ");
+        int courseChoice = scanner.nextInt();
+        scanner.nextLine(); // Consume newline
+
+        if (courseChoice < 1 || courseChoice > taughtCourses.size()) {
+            System.out.println("Invalid course number.");
+            return;
+        }
+
+        String selectedCourseCode = taughtCourses.get(courseChoice - 1);
+        List<TeachingAss> approvedTAs = TeachingAss.getApprovedTAs().stream()
+                .filter(ta -> ta.getAssignedCourses().contains(selectedCourseCode))
+                .collect(Collectors.toList());
+
+        if (approvedTAs.isEmpty()) {
+            System.out.println("No approved TAs for " + selectedCourseCode);
+            return;
+        }
+
+        System.out.println("Approved TAs for " + selectedCourseCode + ":");
+        for (TeachingAss ta : approvedTAs) {
+            System.out.println("TA: " + ta.getName() + " (ID: " + ta.getId() + ")");
+        }
     }
 
     private List<Student> getEnrolledStudents(String courseCode) {
