@@ -5,8 +5,8 @@ import java.util.Scanner;
 
 public class Login {
     private HashMap<Integer, User> usersMap = new HashMap<>();
-    private HashMap<Integer, Student> studentsMap = new HashMap<>();
-    private HashMap<Integer, Professor> professorsMap = new HashMap<>();
+    private static HashMap<Integer, Student> studentsMap = new HashMap<>();
+    private static HashMap<Integer, Professor> professorsMap = new HashMap<>();
     private Scanner scanner = new Scanner(System.in);
     private static final int ADMIN_ID = 2005;
     private static final String ADMIN_PASSWORD = "admin123";
@@ -19,7 +19,7 @@ public class Login {
     private void prepopulateStudents() {
         Student student1 = new Student(1001, "pass1001", "Alice Smith", "Student", 1234567890L, 1001, 1);
         Student student2 = new Student(1002, "pass1002", "Bob Johnson", "Student", 2345678901L, 1002, 2);
-        Student student3 = new Student(1003, "pass1003", "Charlie Brown", "Student", 3456789012L, 1003, 3);
+        Student student3 = new Student(1003, "pass1003", "Charlie Brown", "Student", 3456789012L, 1003, 7);
         Student student4 = new Student(1004, "pass1004", "Diana Prince", "Student", 4567890123L, 1004, 1);
         Student student5 = new Student(1005, "pass1005", "Ethan Hunt", "Student", 5678901234L, 1005, 2);
 
@@ -196,5 +196,9 @@ public class Login {
 
     public HashMap<Integer, Professor> getProfessorsMap() {
         return professorsMap;
+    }
+
+    public static Student getStudentById(int studentId) {
+        return studentsMap.get(studentId);
     }
 }

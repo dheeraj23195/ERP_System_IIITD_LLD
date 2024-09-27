@@ -165,4 +165,5 @@ public class Courses {
     public void removeProfessor() {
         this.assignedProfessor = null;
     }
+
 }

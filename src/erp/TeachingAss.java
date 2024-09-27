@@ -1,14 +1,16 @@
 package erp;
 
+import java.util.ArrayList;
 import java.util.List;
 
 public class TeachingAss extends Student {
-    private boolean completed;
     private List<String> assignedCourses;
+    private static List<TeachingAss> approvedTAs = new ArrayList<>();
 
-    public TeachingAss(int id, String password, String name, long phoneno, int rollno, int semester) {
-        super(id, password, name, "TeachingAssistant", phoneno, rollno, semester);
-        this.completed = false;
+    public TeachingAss(Student student) {
+        super(student.getId(), student.getPassword(), student.getName(), "TeachingAssistant", student.getPhoneno(), student.getRollno(), student.getSemester());
+        this.assignedCourses = new ArrayList<>();
+        approvedTAs.add(this);
     }
 
     public void assignCourse(String courseCode) {
@@ -25,12 +27,25 @@ public class TeachingAss extends Student {
         return assignedCourses;
     }
 
-    public boolean isCompleted() {
-        return completed;
+    public static List<TeachingAss> getApprovedTAs() {
+        return approvedTAs;
     }
 
-    public void setCompleted(boolean completed) {
-        this.completed = completed;
+    public void manageGrades(String courseCode, int studentId, String grade) {
+        if (!assignedCourses.contains(courseCode)) {
+            System.out.println("You are not assigned to this course.");
+            return;
+        }
+
+        // Assuming we have a method to get a student by ID
+        Student student = Login.getStudentById(studentId);
+        if (student == null) {
+            System.out.println("Student not found.");
+            return;
+        }
+
+        student.addGrade(courseCode, grade);
+        System.out.println("Grade added for student " + studentId + " in course " + courseCode);
     }
 
     @Override

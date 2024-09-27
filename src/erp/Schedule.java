@@ -9,10 +9,31 @@ public class Schedule {
     private static final LocalTime END_TIME = LocalTime.of(18, 30);
     private static final int TIME_SLOT = 30;
 
-    public static void displaySchedule(Student student) {
-        List<Courses> registeredCourses = student.courseManager.getRegisteredCourses();
+    public static void displaySchedule(Schedulable user) {
+        if (user instanceof Student) {
+            displayStudentSchedule((Student) user);
+        } else if (user instanceof Professor) {
+            displayProfessorSchedule((Professor) user);
+        } else {
+            System.out.println("Unknown user type for schedule display.");
+        }
+    }
 
-        System.out.println("Weekly Schedule for " + student.getName());
+    private static void displayStudentSchedule(Student student) {
+        List<Courses> registeredCourses = student.courseManager.getRegisteredCourses();
+        displayWeeklySchedule(student.getName(), registeredCourses);
+    }
+
+    private static void displayProfessorSchedule(Professor professor) {
+        List<Courses> taughtCourses = professor.getTaughtCourses().stream()
+                .map(Courses::getCourse)
+                .filter(course -> course != null)
+                .collect(java.util.stream.Collectors.toList());
+        displayWeeklySchedule("Professor " + professor.getName(), taughtCourses);
+    }
+
+    private static void displayWeeklySchedule(String name, List<Courses> courses) {
+        System.out.println("Weekly Schedule for " + name);
         System.out.println("----------------------------------------------------");
         System.out.printf("%-10s", "Time");
         for (String day : DAYS) {
@@ -25,9 +46,9 @@ public class Schedule {
             System.out.printf("%-10s", currentTime);
 
             for (String day : DAYS) {
-                Courses course = findCourse(registeredCourses, day, currentTime);
+                Courses course = findCourse(courses, day, currentTime);
                 if (course != null) {
-                    System.out.printf("%-20s", course.code + " - " + course.getAssignedProfessor());
+                    System.out.printf("%-20s", course.code + " - " + course.getAssignedProfessor().getName());
                 } else {
                     System.out.printf("%-20s", "");
                 }

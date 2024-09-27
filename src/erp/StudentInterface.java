@@ -84,7 +84,8 @@ public class StudentInterface {
             return false;
         }
         CourseManager.CompletedCourse selectedCourse = availcourses.get(CourseCode);
-        student.addCourseforTA(selectedCourse);
+        int currentSemester = student.getSemester();
+        //student.addCourseForTA(selectedCourse, currentSemester);
         System.out.println("Successfully applied for TAship in course: " + CourseCode);
         return true;
     }
