@@ -2,7 +2,6 @@ package erp;
 
 import java.util.ArrayList;
 import java.util.List;
-import java.util.Map;
 
 public class Student extends User implements Gradable,Schedulable{
     private long phoneno;
@@ -10,8 +9,6 @@ public class Student extends User implements Gradable,Schedulable{
     private int semester;
     CourseManager courseManager;
     private static List<Courses> completedCourses = new ArrayList<>();
-    private static List<List<Object>> courseAsTA = new ArrayList<>();
-    private static List<TAApplication> taApplications = new ArrayList<>();
 
     public Student(int id, String password, String name, String role, long phoneno, int rollno, int semester) {
         super(id, password, name, role);
@@ -37,10 +34,6 @@ public class Student extends User implements Gradable,Schedulable{
         return courseManager.getRegisteredCourses();
     }
 
-    public Map<String, CourseManager.CompletedCourse> getCompletedCourses() {
-        return courseManager.getCompletedCourses();
-    }
-
     public double getCGPA() {
         return courseManager.calculateCGPA();
     }
@@ -63,28 +56,6 @@ public class Student extends User implements Gradable,Schedulable{
     public void displaySchedule() {
         Schedule.displaySchedule(this);
     }
-    public boolean applyForTA(String courseCode) {
-        if (this.semester <= 5) {
-            System.out.println("You must be above 5th semester to apply for a TA position.");
-            return false;
-        }
-
-        CourseManager.CompletedCourse completedCourse = courseManager.getCompletedCourses().get(courseCode);
-        if (completedCourse == null || completedCourse.getGradePoint() < 8.0) {
-            System.out.println("You must have completed the course with a grade of 8.0 or higher to apply for a TA position.");
-            return false;
-        }
-
-        TAApplication application = new TAApplication(this, courseCode);
-        taApplications.add(application);
-        System.out.println("Application submitted for TA position in " + courseCode);
-        return true;
-    }
-
-    public static List<TAApplication> getTAApplications() {
-        return taApplications;
-    }
-
 
     public void setSemester(int semester) {
         this.semester = semester;
@@ -98,30 +69,6 @@ public class Student extends User implements Gradable,Schedulable{
         }
         return false;
     }
-
-    public CourseManager getCourseManager() {
-        return courseManager;
-    }
-
-
-    class TAApplication {
-        private Student student;
-        private String courseCode;
-        private boolean approved;
-
-        public TAApplication(Student student, String courseCode) {
-            this.student = student;
-            this.courseCode = courseCode;
-            this.approved = false;
-        }
-
-        // Getters and setters
-        public Student getStudent() { return student; }
-        public String getCourseCode() { return courseCode; }
-        public boolean isApproved() { return approved; }
-        public void setApproved(boolean approved) { this.approved = approved; }
-    }
-
     @Override
     public void displayInfo() {
         System.out.println("Student: " + getName() + " (ID: " + getId() + ")");

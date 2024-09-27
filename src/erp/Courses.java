@@ -50,6 +50,10 @@ public class Courses {
         addCourse(new Courses("MTH201", "PNS", 4, new String[]{"MTH100"}, LocalTime.of(11, 0), LocalTime.of(12, 30), new String[]{"Tue", "Thu"}, 2));
         addCourse(new Courses("ECO101", "MB", 4, new String[]{}, LocalTime.of(14, 0), LocalTime.of(15, 30), new String[]{"Mon", "Wed"}, 2));
 
+        addCourse(new Courses("CP1", "CP1", 2, new String[]{}, LocalTime.of(16, 0), LocalTime.of(17, 0), new String[]{"Fri"}, 0));
+        addCourse(new Courses("SG", "SG", 2, new String[]{}, LocalTime.of(17, 0), LocalTime.of(18, 0), new String[]{"Fri"}, 0));
+        addCourse(new Courses("CW", "CW", 2, new String[]{}, LocalTime.of(18, 0), LocalTime.of(19, 0), new String[]{"Fri"}, 0));
+
         addCourse(new Courses("CSE201", "AP", 4, new String[]{"CSE121"}, LocalTime.of(9, 0), LocalTime.of(10, 30), new String[]{"Mon", "Wed"}, 3));
         addCourse(new Courses("MTH203", "M-III", 4, new String[]{"MTH201"}, LocalTime.of(11, 0), LocalTime.of(12, 30), new String[]{"Tue", "Thu"}, 3));
         addCourse(new Courses("SSH201", "RMSSD", 4, new String[]{}, LocalTime.of(14, 0), LocalTime.of(15, 30), new String[]{"Mon", "Wed"}, 3));
@@ -57,25 +61,6 @@ public class Courses {
         addCourse(new Courses("SSH211", "SSP", 4, new String[]{}, LocalTime.of(9, 0), LocalTime.of(10, 30), new String[]{"Tue", "Thu"}, 3));
         addCourse(new Courses("MTH211", "DM", 4, new String[]{"MTH100"}, LocalTime.of(11, 0), LocalTime.of(12, 30), new String[]{"Mon", "Wed"}, 3));
         addCourse(new Courses("CSE211", "OS", 4, new String[]{"CSE112"}, LocalTime.of(14, 0), LocalTime.of(15, 30), new String[]{"Tue", "Thu"}, 3));
-
-        addCourse(new Courses("CSE202", "FCS", 4, new String[]{"CSE121"}, LocalTime.of(9, 0), LocalTime.of(10, 30), new String[]{"Mon", "Wed"}, 4));
-        addCourse(new Courses("CSE231", "OOP", 4, new String[]{"CSE101"}, LocalTime.of(11, 0), LocalTime.of(12, 30), new String[]{"Tue", "Thu"}, 4));
-
-        addCourse(new Courses("CSE301", "DBMS", 4, new String[]{"CSE121"}, LocalTime.of(9, 0), LocalTime.of(10, 30), new String[]{"Mon", "Wed"}, 5));
-        addCourse(new Courses("CSE321", "CN", 4, new String[]{"CSE211"}, LocalTime.of(11, 0), LocalTime.of(12, 30), new String[]{"Tue", "Thu"}, 5));
-        addCourse(new Courses("CSE341", "TOC", 4, new String[]{"MTH211"}, LocalTime.of(14, 0), LocalTime.of(15, 30), new String[]{"Mon", "Wed"}, 5));
-        addCourse(new Courses("HSS2xx", "HSS Elective", 4, new String[]{}, LocalTime.of(16, 0), LocalTime.of(17, 30), new String[]{"Tue", "Thu"}, 5));
-        addCourse(new Courses("SCI2xx", "Science Elective", 4, new String[]{}, LocalTime.of(9, 0), LocalTime.of(10, 30), new String[]{"Fri"}, 5));
-
-        addCourse(new Courses("CSE302", "CD", 4, new String[]{"CSE201"}, LocalTime.of(9, 0), LocalTime.of(10, 30), new String[]{"Mon", "Wed"}, 6));
-        addCourse(new Courses("CSE322", "AI", 4, new String[]{"CSE121", "MTH201"}, LocalTime.of(11, 0), LocalTime.of(12, 30), new String[]{"Tue", "Thu"}, 6));
-        addCourse(new Courses("CSE342", "ML", 4, new String[]{"CSE121", "MTH201"}, LocalTime.of(14, 0), LocalTime.of(15, 30), new String[]{"Mon", "Wed"}, 6));
-        addCourse(new Courses("CSE3xx", "CSE Elective", 4, new String[]{}, LocalTime.of(16, 0), LocalTime.of(17, 30), new String[]{"Tue", "Thu"}, 6));
-        addCourse(new Courses("OPNxxx", "Open Elective", 4, new String[]{}, LocalTime.of(9, 0), LocalTime.of(10, 30), new String[]{"Fri"}, 6));
-
-        addCourse(new Courses("CP1", "CP1", 2, new String[]{}, LocalTime.of(16, 0), LocalTime.of(17, 0), new String[]{"Fri"}, 0));
-        addCourse(new Courses("SG", "SG", 2, new String[]{}, LocalTime.of(17, 0), LocalTime.of(18, 0), new String[]{"Fri"}, 0));
-        addCourse(new Courses("CW", "CW", 2, new String[]{}, LocalTime.of(18, 0), LocalTime.of(19, 0), new String[]{"Fri"}, 0));
     }
 
     public static void addCourse(Courses course) {
@@ -180,5 +165,4 @@ public class Courses {
     public void removeProfessor() {
         this.assignedProfessor = null;
     }
-
 }

@@ -1,6 +1,7 @@
 package erp;
 
-import java.util.*;
+import java.util.List;
+import java.util.Scanner;
 
 public class StudentInterface {
     private static Scanner scanner = new Scanner(System.in);
@@ -35,16 +36,13 @@ public class StudentInterface {
                     checkComplaintStatus();
                     break;
                 case 8:
-                    applyForTAship(student);
-                    break;
-                case 9:
                     System.out.println("Logging out...");
                     return;
-                case 10:
+                case 9:
                     System.out.println("Exiting the program...");
                     System.exit(0);
                 default:
-                    System.out.println("Invalid choice. Please enter a number between 1 and 10.");
+                    System.out.println("Invalid choice. Please enter a number between 1 and 9.");
             }
         }
     }
@@ -58,38 +56,8 @@ public class StudentInterface {
         System.out.println("5) Add/Drop a Course");
         System.out.println("6) Register a Complaint");
         System.out.println("7) Check Complaint Status");
-        System.out.println("8) Apply for TAship");
-        System.out.println("9) Log Out");
-        System.out.println("10) Exit");
-    }
-
-    public static boolean applyForTAship(Student student) {
-        System.out.println("Courses available for TAship: ");
-        Map<String, CourseManager.CompletedCourse> availableCourses = new HashMap<>();
-        Map<String, CourseManager.CompletedCourse> completedCourses = student.getCourseManager().getCompletedCourses();
-
-        for (Map.Entry<String, CourseManager.CompletedCourse> entry : completedCourses.entrySet()) {
-            CourseManager.CompletedCourse course = entry.getValue();
-            if (course.getGradePoint() >= 8.0) {
-                System.out.println(entry.getKey());
-                availableCourses.put(entry.getKey(), course);
-            }
-        }
-
-        if (availableCourses.isEmpty()) {
-            System.out.println("No courses available for TAship.");
-            return false;
-        }
-
-        System.out.print("Enter the course code you want to apply for: ");
-        String courseCode = scanner.next();
-
-        if (!availableCourses.containsKey(courseCode)) {
-            System.out.println("Sorry, the course is unavailable for TAship.");
-            return false;
-        }
-
-        return student.applyForTA(courseCode);
+        System.out.println("8) Log Out");
+        System.out.println("9) Exit");
     }
 
     private static void displayGrades(Student student) {

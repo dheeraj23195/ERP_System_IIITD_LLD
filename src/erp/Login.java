@@ -1,14 +1,12 @@
 package erp;
 
 import java.util.HashMap;
-import java.util.Map;
 import java.util.Scanner;
-import java.util.function.BiConsumer;
 
 public class Login {
     private HashMap<Integer, User> usersMap = new HashMap<>();
-    private static HashMap<Integer, Student> studentsMap = new HashMap<>();
-    private static HashMap<Integer, Professor> professorsMap = new HashMap<>();
+    private HashMap<Integer, Student> studentsMap = new HashMap<>();
+    private HashMap<Integer, Professor> professorsMap = new HashMap<>();
     private Scanner scanner = new Scanner(System.in);
     private static final int ADMIN_ID = 2005;
     private static final String ADMIN_PASSWORD = "admin123";
@@ -21,11 +19,9 @@ public class Login {
     private void prepopulateStudents() {
         Student student1 = new Student(1001, "pass1001", "Alice Smith", "Student", 1234567890L, 1001, 1);
         Student student2 = new Student(1002, "pass1002", "Bob Johnson", "Student", 2345678901L, 1002, 2);
-        Student student3 = new Student(1003, "pass1003", "Charlie Brown", "Student", 3456789012L, 1003, 1);
+        Student student3 = new Student(1003, "pass1003", "Charlie Brown", "Student", 3456789012L, 1003, 3);
         Student student4 = new Student(1004, "pass1004", "Diana Prince", "Student", 4567890123L, 1004, 1);
         Student student5 = new Student(1005, "pass1005", "Ethan Hunt", "Student", 5678901234L, 1005, 2);
-
-        addHardcodedTAEligibleStudent();
 
         addUser(student1);
         addUser(student2);
@@ -70,31 +66,6 @@ public class Login {
         addUser(prof3);
         addUser(prof4);
         addUser(prof5);
-    }
-
-    private void addHardcodedTAEligibleStudent() {
-        Student taStudent = new Student(1006, "pass1006", "Charlie Brown", "Student", 6789012345L, 1006, 7);
-
-        // Hardcoded completed courses with grades
-        Map<String, String> completedCourses = new HashMap<>();
-        completedCourses.put("CSE101", "A"); // Semester 1
-        completedCourses.put("CSE121", "A+"); // Semester 2
-        completedCourses.put("CSE201", "A"); // Semester 3
-        completedCourses.put("CSE231", "A-"); // Semester 4
-        completedCourses.put("CSE301", "A+"); // Semester 5
-        completedCourses.put("CSE302", "A"); // Semester 6
-
-        for (Map.Entry<String, String> entry : completedCourses.entrySet()) {
-            String courseCode = entry.getKey();
-            String grade = entry.getValue();
-            Courses course = Courses.getCourse(courseCode);
-            if (course != null) {
-                taStudent.getCourseManager().addCompletedCourse(course, grade);
-            }
-        }
-
-        addUser(taStudent);
-        System.out.println("Added TA-eligible student: Charlie Brown (ID: 1006)");
     }
 
     private void assignCourseToProfessor(String courseCode, Professor professor) {
@@ -225,9 +196,5 @@ public class Login {
 
     public HashMap<Integer, Professor> getProfessorsMap() {
         return professorsMap;
-    }
-
-    public static Student getStudentById(int studentId) {
-        return studentsMap.get(studentId);
     }
 }

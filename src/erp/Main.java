@@ -5,7 +5,6 @@ public class Main {
     private static ProfessorInterface professorInterface;
     private static StudentInterface studentInterface;
     private static AdminInterface adminInterface;
-    private static TAInterface taInterface;
 
     public static void main(String[] args) {
         initializeSystem();
@@ -19,7 +18,6 @@ public class Main {
         professorInterface = new ProfessorInterface(loginSystem);
         studentInterface = new StudentInterface();
         adminInterface = new AdminInterface(loginSystem);
-        taInterface = new TAInterface(loginSystem);
     }
 
     private static void runMainLoop() {
@@ -32,9 +30,7 @@ public class Main {
 
             user.displayInfo();
 
-            if (user instanceof TeachingAss) {
-                handleTeachingAssUser((TeachingAss) user);
-            } else if (user instanceof Student) {
+            if (user instanceof Student) {
                 handleStudentUser((Student) user);
             } else if (user instanceof Professor) {
                 handleProfessorUser((Professor) user);
@@ -68,16 +64,5 @@ public class Main {
     private static void handleAdminUser(Admin admin) {
         System.out.println("Welcome, Administrator " + admin.getName());
         AdminInterface.adminMenu();
-    }
-
-    private static void handleTeachingAssUser(TeachingAss ta) {
-        System.out.println("Welcome, Teaching Assistant " + ta.getName());
-        if (ta instanceof Schedulable) {
-            ((Schedulable) ta).displaySchedule();
-        }
-        if (ta instanceof Gradable) {
-            System.out.println("Current CGPA: " + ((Gradable) ta).calculateGPA());
-        }
-        taInterface.run(ta);
     }
 }

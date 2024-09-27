@@ -198,11 +198,6 @@ public class CourseManager {
         }
     }
 
-    public void addCompletedCourse(Courses course, String grade) {
-        CompletedCourse completedCourse = new CompletedCourse(course, grade);
-        completedCourses.put(course.getCode(), completedCourse);
-    }
-
     public void updateSemester(int newSemester) {
         this.currentSemester = newSemester;
         this.registeredCourses.clear();
@@ -285,13 +280,11 @@ public class CourseManager {
         return totalGradePoints / totalCredits;
     }
 
-    public Map<String, CompletedCourse> getCompletedCourses() {return this.completedCourses;}
-
     public List<Courses> getRegisteredCourses() {
         return new ArrayList<>(registeredCourses);
     }
 
-    class CompletedCourse {
+    private class CompletedCourse {
         private Courses course;
         private String grade;
 
