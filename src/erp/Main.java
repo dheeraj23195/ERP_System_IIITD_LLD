@@ -20,6 +20,7 @@ public class Main {
         studentInterface = new StudentInterface();
         adminInterface = new AdminInterface(loginSystem);
         taInterface = new TAInterface(loginSystem);
+        StudentInterface.setTAInterface(taInterface);
     }
 
     private static void runMainLoop() {
@@ -32,52 +33,18 @@ public class Main {
 
             user.displayInfo();
 
-            if (user instanceof TeachingAss) {
-                handleTeachingAssUser((TeachingAss) user);
-            } else if (user instanceof Student) {
-                handleStudentUser((Student) user);
+            if (user instanceof Student) {
+                StudentInterface.run(user);
             } else if (user instanceof Professor) {
-                handleProfessorUser((Professor) user);
+                professorInterface.run((Professor) user);
             } else if (user instanceof Admin) {
-                handleAdminUser((Admin) user);
+                adminInterface.adminMenu();
             } else {
                 System.out.println("Unknown user type. Exiting.");
                 break;
             }
 
-            System.out.println("Logged out. " + user.getDetails()); // Using the abstract method
+            System.out.println("Logged out. " + user.getDetails());
         }
-    }
-
-    private static void handleStudentUser(Student student) {
-        System.out.println("Welcome, Student " + student.getName());
-        if (student instanceof Schedulable) {
-            ((Schedulable) student).displaySchedule();
-        }
-        if (student instanceof Gradable) {
-            System.out.println("Current CGPA: " + ((Gradable) student).calculateGPA());
-        }
-        StudentInterface.run(student);
-    }
-
-    private static void handleProfessorUser(Professor professor) {
-        System.out.println("Welcome, Professor " + professor.getName());
-        professorInterface.run(professor);
-    }
-
-    private static void handleAdminUser(Admin admin) {
-        System.out.println("Welcome, Administrator " + admin.getName());
-        AdminInterface.adminMenu();
-    }
-
-    private static void handleTeachingAssUser(TeachingAss ta) {
-        System.out.println("Welcome, Teaching Assistant " + ta.getName());
-        if (ta instanceof Schedulable) {
-            ((Schedulable) ta).displaySchedule();
-        }
-        if (ta instanceof Gradable) {
-            System.out.println("Current CGPA: " + ((Gradable) ta).calculateGPA());
-        }
-        taInterface.run(ta);
     }
 }

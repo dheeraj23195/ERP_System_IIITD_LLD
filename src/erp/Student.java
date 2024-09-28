@@ -12,6 +12,7 @@ public class Student extends User implements Gradable,Schedulable{
     private static List<Courses> completedCourses = new ArrayList<>();
     private static List<List<Object>> courseAsTA = new ArrayList<>();
     private static List<TAApplication> taApplications = new ArrayList<>();
+    private boolean isTA;
 
     public Student(int id, String password, String name, String role, long phoneno, int rollno, int semester) {
         super(id, password, name, role);
@@ -19,6 +20,7 @@ public class Student extends User implements Gradable,Schedulable{
         this.rollno = rollno;
         this.semester = semester;
         this.courseManager = new CourseManager(semester);
+        this.isTA = false;
     }
 
     public long getPhoneno() {
@@ -103,6 +105,13 @@ public class Student extends User implements Gradable,Schedulable{
         return courseManager;
     }
 
+    public boolean getTAstatus() {
+        return isTA;
+    }
+
+    public void setTAStatus(boolean TA) {
+        isTA = TA;
+    }
 
     class TAApplication {
         private Student student;
@@ -119,7 +128,10 @@ public class Student extends User implements Gradable,Schedulable{
         public Student getStudent() { return student; }
         public String getCourseCode() { return courseCode; }
         public boolean isApproved() { return approved; }
-        public void setApproved(boolean approved) { this.approved = approved; }
+        public void setApproved(boolean approved){
+            this.approved = approved;
+            student.isTA = true;
+        }
     }
 
     @Override

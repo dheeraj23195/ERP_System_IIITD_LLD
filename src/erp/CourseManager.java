@@ -8,7 +8,7 @@ public class CourseManager {
     private static final int MAX_CREDITS = 20;
     private List<Courses> registeredCourses;
     private Map<String, CompletedCourse> completedCourses;
-    private int currentSemester;
+    private static int currentSemester;
     private int currentCredits;
     private static Scanner sc = new Scanner(System.in);
     private static Login loginSystem;
@@ -208,7 +208,29 @@ public class CourseManager {
         this.registeredCourses.clear();
         this.currentCredits = 0;
     }
+    public void checkAndUpdateTAStatus(String courseCode) {
+        CompletedCourse completedCourse = completedCourses.get(courseCode);
+        if (completedCourse != null && completedCourse.getCourse().isGraded()) {
+            updateTAStatusAndAssignments(courseCode);
+        }
+    }
 
+    private void updateTAStatusAndAssignments(String courseCode) {
+        List<TeachingAss> assignedTAs = TeachingAss.getApprovedTAs().stream()
+                .filter(ta -> ta.getAssignedCourses().contains(courseCode))
+                .collect(Collectors.toList());
+
+        for (TeachingAss ta : assignedTAs) {
+            ta.removeAssignedCourse(courseCode);
+            if (ta.getAssignedCourses().isEmpty()) {
+                // If TA has no more assigned courses, update TA status
+                ta.setTAStatus(false);
+                TeachingAss.removeApprovedTA(ta);
+            }
+        }
+
+        System.out.println("TA assignments updated for course: " + courseCode);
+    }
     public void displayGrades(int semester) {
         if (semester == 0) {
             displayAllGrades();

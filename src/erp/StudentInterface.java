@@ -4,14 +4,25 @@ import java.util.*;
 
 public class StudentInterface {
     private static Scanner scanner = new Scanner(System.in);
+    private static TAInterface taInterface;
 
-    public static void run(Student student) {
+    public static void setTAInterface(TAInterface taInterface) {
+        StudentInterface.taInterface = taInterface;
+    }
+
+    public static void run(User user) {
+        if (!(user instanceof Student)) {
+            System.out.println("Invalid user type for Student Interface.");
+            return;
+        }
+
+        Student student = (Student) user;
         System.out.println("Welcome, " + student.getName() + "!");
-        while(true) {
-            displayMenu();
+
+        while (true) {
+            int a = displayMenu(student);
             int choice = scanner.nextInt();
             scanner.nextLine();
-
             switch (choice) {
                 case 1:
                     Schedule.displaySchedule(student);
@@ -20,7 +31,7 @@ public class StudentInterface {
                     displayGrades(student);
                     break;
                 case 3:
-                    student.courseManager.displayRegisteredCourses();
+                    student.getCourseManager().displayRegisteredCourses();
                     break;
                 case 4:
                     displayAvailableCourses(student);
@@ -35,7 +46,11 @@ public class StudentInterface {
                     checkComplaintStatus();
                     break;
                 case 8:
-                    applyForTAship(student);
+                    if (student.getTAstatus()) {
+                        openTAMenu(student);
+                    } else {
+                        applyForTAship(student);
+                    }
                     break;
                 case 9:
                     System.out.println("Logging out...");
@@ -49,7 +64,27 @@ public class StudentInterface {
         }
     }
 
-    private static void displayMenu() {
+    private static void openTAMenu(Student student) {
+        if (taInterface == null) {
+            System.out.println("TA Interface is not initialized.");
+            return;
+        }
+
+        TeachingAss ta = TeachingAss.getApprovedTAs().stream()
+                .filter(t -> t.getId() == student.getId())
+                .findFirst()
+                .orElse(null);
+
+        if (ta != null) {
+            System.out.println("Switching to TA Interface...");
+            taInterface.run(ta);
+            System.out.println("Returning to Student Interface...");
+        } else {
+            System.out.println("Error: TA status not found. Please contact an administrator.");
+        }
+    }
+    private static int displayMenu(Student student) {
+        int a=0;
         System.out.println("\nPlease Enter the task Number that you would like to do:");
         System.out.println("1) View Schedule");
         System.out.println("2) View Grades");
@@ -58,9 +93,16 @@ public class StudentInterface {
         System.out.println("5) Add/Drop a Course");
         System.out.println("6) Register a Complaint");
         System.out.println("7) Check Complaint Status");
-        System.out.println("8) Apply for TAship");
+        if(student.getTAstatus()){
+            a=1;
+            System.out.println("8) Open TA Menu");
+        }
+        else{
+            System.out.println("8) Apply for TAship");
+        }
         System.out.println("9) Log Out");
         System.out.println("10) Exit");
+        return a;
     }
 
     public static boolean applyForTAship(Student student) {

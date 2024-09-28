@@ -221,6 +221,10 @@ public class ProfessorInterface {
             student.courseManager.addGrade(courseCode, grade);
         }
         System.out.println("All students graded for course " + courseCode);
+
+        if (!students.isEmpty()) {
+            students.get(0).getCourseManager().checkAndUpdateTAStatus(courseCode);
+        }
     }
     private void viewTAApplications(Professor prof) {
         System.out.println("Select a course to view TA applications:");

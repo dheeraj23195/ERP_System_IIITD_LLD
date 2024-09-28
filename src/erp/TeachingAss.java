@@ -19,16 +19,12 @@ public class TeachingAss extends Student {
         }
     }
 
-    public void removeAssignedCourse(String courseCode) {
-        assignedCourses.remove(courseCode);
-    }
-
     public List<String> getAssignedCourses() {
-        return assignedCourses;
+        return new ArrayList<>(assignedCourses);
     }
 
     public static List<TeachingAss> getApprovedTAs() {
-        return approvedTAs;
+        return new ArrayList<>(approvedTAs);
     }
 
     public void manageGrades(String courseCode, int studentId, String grade) {
@@ -36,8 +32,6 @@ public class TeachingAss extends Student {
             System.out.println("You are not assigned to this course.");
             return;
         }
-
-        // Assuming we have a method to get a student by ID
         Student student = Login.getStudentById(studentId);
         if (student == null) {
             System.out.println("Student not found.");
@@ -47,6 +41,22 @@ public class TeachingAss extends Student {
         student.addGrade(courseCode, grade);
         System.out.println("Grade added for student " + studentId + " in course " + courseCode);
     }
+    public void removeAssignedCourse(String courseCode) {
+        assignedCourses.remove(courseCode);
+    }
+
+    public static void removeApprovedTA(TeachingAss ta) {
+        approvedTAs.remove(ta);
+    }
+
+    @Override
+    public void setTAStatus(boolean status) {
+        super.setTAStatus(status);
+        if (!status) {
+            assignedCourses.clear();
+        }
+    }
+
 
     @Override
     public void displayInfo() {
@@ -61,5 +71,21 @@ public class TeachingAss extends Student {
                 ", name='" + getName() + '\'' +
                 ", assignedCourses=" + assignedCourses +
                 '}';
+    }
+
+    @Override
+    public boolean getTAstatus() {
+        return true;
+    }
+
+    public static boolean isApprovedTA(int studentId) {
+        return approvedTAs.stream().anyMatch(ta -> ta.getId() == studentId);
+    }
+
+    public static TeachingAss getApprovedTAById(int studentId) {
+        return approvedTAs.stream()
+                .filter(ta -> ta.getId() == studentId)
+                .findFirst()
+                .orElse(null);
     }
 }

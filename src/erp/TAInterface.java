@@ -24,7 +24,7 @@ public class TAInterface {
             System.out.println("0) Log Out");
             System.out.print("Enter your choice: ");
             int choice = scanner.nextInt();
-            scanner.nextLine(); // Consume newline
+            scanner.nextLine();
 
             switch (choice) {
                 case 1:
@@ -58,7 +58,7 @@ public class TAInterface {
         for (String courseCode : assignedCourses) {
             Courses course = Courses.getCourse(courseCode);
             if (course != null) {
-                System.out.println(course.toString());
+                System.out.println(course);
             }
         }
     }
