@@ -10,7 +10,6 @@ public class Student extends User implements Gradable,Schedulable{
     private int semester;
     CourseManager courseManager;
     private static List<Courses> completedCourses = new ArrayList<>();
-    private static List<List<Object>> courseAsTA = new ArrayList<>();
     private static List<TAApplication> taApplications = new ArrayList<>();
     private boolean isTA;
 
@@ -61,7 +60,6 @@ public class Student extends User implements Gradable,Schedulable{
     public void setRollno(int rollno) {
         this.rollno = rollno;
     }
-    @Override
     public void displaySchedule() {
         Schedule.displaySchedule(this);
     }
