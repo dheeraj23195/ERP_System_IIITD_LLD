@@ -31,6 +31,7 @@ public class Login{
         addUser(student3);
         addUser(student4);
         addUser(student5);
+        System.out.println("HELLO!!");
     }
 
     private void prepopulateProfessors() {
@@ -74,7 +75,6 @@ public class Login{
     private void addHardcodedTAEligibleStudent() {
         Student taStudent = new Student(1006, "pass1006", "Charlie Brown", "Student", 6789012345L, 1006, 7);
 
-        // Hardcoded completed courses with grades
         Map<String, String> completedCourses = new HashMap<>();
         completedCourses.put("CSE101", "A"); // Semester 1
         completedCourses.put("CSE121", "A+"); // Semester 2

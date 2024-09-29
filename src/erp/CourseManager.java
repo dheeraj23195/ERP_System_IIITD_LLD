@@ -8,7 +8,7 @@ public class CourseManager {
     private static final int MAX_CREDITS = 20;
     private final List<Courses> registeredCourses;
     private final Map<String, CompletedCourse> completedCourses;
-    private static int currentSemester;
+    private int currentSemester;
     private int currentCredits;
     private static Login loginSystem;
     private static final int DROPDEADLINETIME=30;
@@ -16,7 +16,7 @@ public class CourseManager {
     public CourseManager(int currentSemester) {
         this.registeredCourses = new ArrayList<>();
         this.completedCourses = new HashMap<>();
-        CourseManager.currentSemester = currentSemester;
+        this.currentSemester = currentSemester;
         this.currentCredits = 0;
     }
 

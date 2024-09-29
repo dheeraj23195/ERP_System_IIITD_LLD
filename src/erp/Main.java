@@ -55,7 +55,4 @@ public class Main {
         return now;
     }
 
-    public static void setNow(LocalDateTime now) {
-        Main.now = now;
-    }
 }

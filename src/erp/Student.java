@@ -46,9 +46,6 @@ public class Student extends User implements Gradable,Schedulable{
         return courseManager.calculateCGPA();
     }
 
-    public void addCompletedCourse(Courses course) {
-        completedCourses.add(course);
-    }
     public void setName(String name) {
         this.name = name;
     }
