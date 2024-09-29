@@ -1,6 +1,6 @@
 package erp;
 
-import java.time.LocalTime;
+import java.time.LocalDateTime;
 import java.util.*;
 import java.util.stream.Collectors;
 
@@ -12,17 +12,13 @@ public class CourseManager {
     private int currentCredits;
     private static Scanner sc = new Scanner(System.in);
     private static Login loginSystem;
-
+    private static final int DROPDEADLINETIME=30;
 
     public CourseManager(int currentSemester) {
         this.registeredCourses = new ArrayList<>();
         this.completedCourses = new HashMap<>();
         this.currentSemester = currentSemester;
         this.currentCredits = 0;
-    }
-
-    public static void setLoginSystem(Login loginSystem) {
-        CourseManager.loginSystem = loginSystem;
     }
 
     public boolean addCourse(String courseCode) throws CourseFullException {
@@ -50,7 +46,6 @@ public class CourseManager {
             if (course.getEnrollmentLimit() <= enrolledStudents.size()) {
                 throw new CourseFullException("Course " + courseCode + " is already full. More students cannot be registered.");
             }
-
             registeredCourses.add(course);
             currentCredits += course.getCredits();
             System.out.println("Course " + courseCode + " added successfully.");
@@ -60,7 +55,10 @@ public class CourseManager {
         return false;
     }
 
-    public boolean dropCourse(String courseCode) {
+    public boolean dropCourse(String courseCode) throws DropDeadlinePassedException {
+        if(LocalDateTime.now().isAfter(Main.getNow().plusSeconds(DROPDEADLINETIME))){
+            throw new DropDeadlinePassedException("The Deadline for dropping a course has passed.");
+        }
         Courses course = registeredCourses.stream()
                 .filter(c -> c.getCode().equals(courseCode))
                 .findFirst()

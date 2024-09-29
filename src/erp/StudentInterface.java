@@ -221,11 +221,17 @@ public class StudentInterface {
             case 2:
                 System.out.println("Enter the course code you would like to drop: ");
                 String dropCourseCode = scanner.nextLine();
-                boolean dropped = student.courseManager.dropCourse(dropCourseCode);
-                if (dropped) {
-                    System.out.println("Course " + dropCourseCode + " dropped successfully.");
+                try {
+                    boolean dropped = student.courseManager.dropCourse(dropCourseCode);
+                    if (dropped) {
+                        System.out.println("Course " + dropCourseCode + " dropped successfully.");
+                    }
+                    break;
                 }
-                break;
+                catch (Exception e) {
+                    System.out.println("Error: " + e.getMessage());
+                    break;
+                }
             case 3:
                 break;
             default:

@@ -3,9 +3,8 @@ package erp;
 import java.util.HashMap;
 import java.util.Map;
 import java.util.Scanner;
-import java.util.function.BiConsumer;
 
-public class Login {
+public class Login{
     private HashMap<Integer, User> usersMap = new HashMap<>();
     private static HashMap<Integer, Student> studentsMap = new HashMap<>();
     private static HashMap<Integer, Professor> professorsMap = new HashMap<>();
@@ -177,7 +176,13 @@ public class Login {
         scanner.nextLine();
         System.out.println("Please enter your password: ");
         String password = scanner.nextLine();
-        return login(userId, password);
+        try {
+            return login(userId, password);
+        }
+        catch(Exception e) {
+            System.out.println("Error: " + e.getMessage());
+            return null;
+        }
     }
 
     private boolean signup(int id, String password, String name, String role, long phoneno, int rollno, int semester) {
@@ -201,7 +206,7 @@ public class Login {
         return true;
     }
 
-    private User login(int id, String password) {
+    private User login (int id, String password) throws InvalidLoginException {
         if (id == ADMIN_ID && password.equals(ADMIN_PASSWORD)) {
             return new Admin(ADMIN_ID, ADMIN_PASSWORD, "Administrator", "Administrator");
         }
@@ -210,12 +215,10 @@ public class Login {
             if (password.equals(user.getPassword())) {
                 return user;
             } else {
-                System.out.println("The Password is incorrect. Please try again.");
-                return null;
+                throw new InvalidLoginException("Invalid Login Credentials. Please try again.");
             }
         } else {
-            System.out.println("The User doesn't exist. Please sign up.");
-            return null;
+            throw new InvalidLoginException("User Doesn't exist. Please Sign Up.");
         }
     }
 

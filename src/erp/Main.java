@@ -1,4 +1,7 @@
 package erp;
+import java.time.LocalDate;
+import java.time.LocalDateTime;
+import java.time.LocalTime;
 
 public class Main {
     private static Login loginSystem;
@@ -6,9 +9,11 @@ public class Main {
     private static StudentInterface studentInterface;
     private static AdminInterface adminInterface;
     private static TAInterface taInterface;
+    private static LocalDateTime now;
 
     public static void main(String[] args) {
         initializeSystem();
+        now=LocalDateTime.now();
         runMainLoop();
     }
 
@@ -34,7 +39,7 @@ public class Main {
             user.displayInfo();
 
             if (user instanceof Student) {
-                StudentInterface.run(user);
+                studentInterface.run(user);
             } else if (user instanceof Professor) {
                 professorInterface.run((Professor) user);
             } else if (user instanceof Admin) {
@@ -46,5 +51,13 @@ public class Main {
 
             System.out.println("Logged out. " + user.getDetails());
         }
+    }
+
+    public static LocalDateTime getNow() {
+        return now;
+    }
+
+    public static void setNow(LocalDateTime now) {
+        Main.now = now;
     }
 }
