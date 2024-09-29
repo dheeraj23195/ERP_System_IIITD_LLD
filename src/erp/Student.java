@@ -8,7 +8,7 @@ public class Student extends User implements Gradable,Schedulable{
     private long phoneno;
     private int rollno;
     private int semester;
-    CourseManager courseManager;
+    public CourseManager courseManager;
     private static List<Courses> completedCourses = new ArrayList<>();
     private static List<TAApplication> taApplications = new ArrayList<>();
     private boolean isTA;

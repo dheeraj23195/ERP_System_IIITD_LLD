@@ -40,7 +40,7 @@ public class TAInterface {
                     modifyGrades(ta);
                     break;
                 case 0:
-                    return; // Log out and exit
+                    return;
                 default:
                     System.out.println("Invalid choice. Please try again.");
             }

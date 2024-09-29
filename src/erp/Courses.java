@@ -157,6 +157,10 @@ public class Courses {
         return graded;
     }
 
+    public String getCoursename() {
+        return coursename;
+    }
+
     public void setGraded(boolean graded) {
         this.graded = graded;
     }

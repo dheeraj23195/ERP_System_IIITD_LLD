@@ -53,13 +53,16 @@ public class StudentInterface {
                     }
                     break;
                 case 9:
+                    enterFeedback(student);
+                    break;
+                case 10:
                     System.out.println("Logging out...");
                     return;
-                case 10:
+                case 11:
                     System.out.println("Exiting the program...");
                     System.exit(0);
                 default:
-                    System.out.println("Invalid choice. Please enter a number between 1 and 10.");
+                    System.out.println("Invalid choice. Please enter a number between 1 and 11.");
             }
         }
     }
@@ -83,9 +86,57 @@ public class StudentInterface {
             System.out.println("Error: TA status not found. Please contact an administrator.");
         }
     }
+    private static void enterFeedback(Student student) {
+        Map<String, CourseManager.CompletedCourse> comcourses = student.getCompletedCourses();
+        System.out.println("You can submit feedback for: ");
+        for (Map.Entry<String, CourseManager.CompletedCourse> entry : comcourses.entrySet()) {
+            System.out.println(entry.getKey() + " - " + entry.getValue().getCourse().getCoursename());
+        }
+        System.out.print("Enter Course Code: ");
+        String courseCode = scanner.nextLine();
+        CourseManager.CompletedCourse completedCourse = comcourses.get(courseCode);
+        if (completedCourse != null) {
+            Courses course = completedCourse.getCourse();
+            System.out.print("Enter your feedback (text, integer, or decimal): ");
+            String input = scanner.nextLine();
+            Feedback<?> feedback;
+            if (isInteger(input)) {
+                feedback = new Feedback<>(Integer.parseInt(input));
+            }
+            else if (isDouble(input)) {
+                feedback = new Feedback<>(Double.parseDouble(input));
+            }
+            else {
+                feedback = new Feedback<>(input);
+            }
+            Feedback.addFeedback(courseCode, course.getSemester(), feedback);
+            System.out.println("Feedback added successfully.");
+            Feedback.displayAllFeedbackForCourse(courseCode, course.getSemester());
+        }
+        else {
+            System.out.println("Course not found in completed courses.");
+        }
+    }
+
+    public static boolean isInteger(String input) {
+        try {
+            Integer.parseInt(input);
+            return true;
+        } catch (NumberFormatException e) {
+            return false;
+        }
+    }
+    public static boolean isDouble(String input) {
+        try {
+            Double.parseDouble(input);
+            return true;
+        } catch (NumberFormatException e) {
+            return false;
+        }
+    }
     private static int displayMenu(Student student) {
         int a=0;
-        System.out.println("\nPlease Enter the task Number that you would like to do:");
+        System.out.println("Please Enter the task Number that you would like to do:");
         System.out.println("1) View Schedule");
         System.out.println("2) View Grades");
         System.out.println("3) Display Registered Courses");
@@ -100,8 +151,9 @@ public class StudentInterface {
         else{
             System.out.println("8) Apply for TAship");
         }
-        System.out.println("9) Log Out");
-        System.out.println("10) Exit");
+        System.out.println("9) Enter Course Feedback");
+        System.out.println("10) Log Out");
+        System.out.println("11) Exit");
         return a;
     }
 
@@ -156,12 +208,23 @@ public class StudentInterface {
             case 1:
                 System.out.println("Enter the course code you would like to add: ");
                 String addCourseCode = scanner.nextLine();
-                student.courseManager.addCourse(addCourseCode);
+                try {
+                    boolean added = student.courseManager.addCourse(addCourseCode);
+                    if (added) {
+                        System.out.println("Course " + addCourseCode + " added successfully.");
+                    }
+                } catch (CourseFullException e) {
+                    System.out.println("Error: " + e.getMessage());
+                    System.out.println("Please choose a different course or contact the administrator.");
+                }
                 break;
             case 2:
                 System.out.println("Enter the course code you would like to drop: ");
                 String dropCourseCode = scanner.nextLine();
-                student.courseManager.dropCourse(dropCourseCode);
+                boolean dropped = student.courseManager.dropCourse(dropCourseCode);
+                if (dropped) {
+                    System.out.println("Course " + dropCourseCode + " dropped successfully.");
+                }
                 break;
             case 3:
                 break;

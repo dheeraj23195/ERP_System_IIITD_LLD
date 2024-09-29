@@ -23,11 +23,11 @@ public class ProfessorInterface {
             System.out.println("4) View TA Applications");
             System.out.println("5) Approve TA Applications");
             System.out.println("6) View Approved TAs");
+            System.out.println("7) View Course Feedback");
             System.out.println("0) Exit");
             System.out.print("Enter your choice: ");
             int choice = scanner.nextInt();
-            scanner.nextLine(); // Consume newline
-
+            scanner.nextLine();
             switch (choice) {
                 case 1:
                     displayCourses(prof);
@@ -47,12 +47,36 @@ public class ProfessorInterface {
                 case 6:
                     viewApprovedTAs(prof);
                     break;
+                case 7:
+                    displayFeedback(prof);
+                    break;
                 case 0:
                     return;
                 default:
                     System.out.println("Invalid choice. Please try again.");
             }
         }
+    }
+
+    private void displayFeedback(Professor prof) {
+        Feedback feedback=new Feedback<>();
+        System.out.println("Your courses:");
+        List<String> taughtCourses = prof.getTaughtCourses();
+        for (int i = 0; i < taughtCourses.size(); i++) {
+            System.out.println((i + 1) + ") " + taughtCourses.get(i));
+        }
+        System.out.print("Enter the course code you want to view feedback for: ");
+        String courseCode = scanner.nextLine();
+        if (!prof.getTaughtCourses().contains(courseCode)) {
+            System.out.println("You are not assigned to this course.");
+            return;
+        }
+        Courses course = Courses.getCourse(courseCode);
+        if (course == null) {
+            System.out.println("Course not found.");
+            return;
+        }
+        feedback.displayAllFeedbackForCourse(courseCode, course.getSemester());
     }
 
     private void displayCourses(Professor prof) {
@@ -234,7 +258,7 @@ public class ProfessorInterface {
         }
         System.out.print("Enter the number of the course: ");
         int courseChoice = scanner.nextInt();
-        scanner.nextLine(); // Consume newline
+        scanner.nextLine();
 
         if (courseChoice < 1 || courseChoice > taughtCourses.size()) {
             System.out.println("Invalid course number.");

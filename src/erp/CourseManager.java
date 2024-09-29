@@ -13,6 +13,7 @@ public class CourseManager {
     private static Scanner sc = new Scanner(System.in);
     private static Login loginSystem;
 
+
     public CourseManager(int currentSemester) {
         this.registeredCourses = new ArrayList<>();
         this.completedCourses = new HashMap<>();
@@ -24,49 +25,7 @@ public class CourseManager {
         CourseManager.loginSystem = loginSystem;
     }
 
-    public static void addCourse() {
-        System.out.println("Enter course details:");
-        System.out.print("Course Code: ");
-        String code = sc.nextLine();
-        System.out.print("Course Name: ");
-        String name = sc.nextLine();
-        System.out.print("Credits: ");
-        int credits = sc.nextInt();
-        sc.nextLine();
-        System.out.print("Prerequisites (comma-separated, or 'none'): ");
-        String prereqInput = sc.nextLine();
-        String[] prereq = prereqInput.equalsIgnoreCase("none") ? new String[]{} : prereqInput.split(",");
-        System.out.print("Start Time (HH:mm): ");
-        LocalTime startTime = LocalTime.parse(sc.nextLine());
-        System.out.print("End Time (HH:mm): ");
-        LocalTime endTime = LocalTime.parse(sc.nextLine());
-        System.out.print("Days (comma-separated): ");
-        String[] days = sc.nextLine().split(",");
-        System.out.print("Semester: ");
-        int semester = sc.nextInt();
-        sc.nextLine();
-
-        Courses newCourse = new Courses(code, name, credits, prereq, startTime, endTime, days, semester);
-        Courses.addCourse(newCourse);
-        System.out.println("Course added successfully!");
-
-        System.out.print("Do you want to assign a professor to this course? (Y/N): ");
-        String assignProf = sc.nextLine();
-        if (assignProf.equalsIgnoreCase("Y")) {
-            System.out.print("Enter professor ID: ");
-            int profId = sc.nextInt();
-            sc.nextLine();
-            Professor prof = loginSystem.getProfessorsMap().get(profId);
-            if (prof != null) {
-                newCourse.assignProfessor(prof);
-                System.out.println("Professor assigned successfully!");
-            } else {
-                System.out.println("Professor not found. You can assign a professor later.");
-            }
-        }
-    }
-
-    public boolean addCourse(String courseCode) {
+    public boolean addCourse(String courseCode) throws CourseFullException {
         Courses course = Courses.getCourse(courseCode);
         if (course == null) {
             System.out.println("This is not a valid course code");
@@ -83,6 +42,15 @@ public class CourseManager {
             }
         }
         if (currentCredits + course.getCredits() <= MAX_CREDITS) {
+            List<Student> enrolledStudents = loginSystem.getStudentsMap().values().stream()
+                    .filter(student -> student.getRegisteredCourses().stream()
+                            .anyMatch(c -> c.getCode().equals(courseCode)))
+                    .collect(Collectors.toList());
+
+            if (course.getEnrollmentLimit() <= enrolledStudents.size()) {
+                throw new CourseFullException("Course " + courseCode + " is already full. More students cannot be registered.");
+            }
+
             registeredCourses.add(course);
             currentCredits += course.getCredits();
             System.out.println("Course " + courseCode + " added successfully.");
