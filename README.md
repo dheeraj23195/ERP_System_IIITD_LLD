@@ -60,10 +60,6 @@ While not explicitly mentioned in the code, the Object class plays a crucial rol
 
 - Usage in the System: Object class methods are used throughout the system, especially when working with collections, comparing objects, or generating string representations of objects.
 
-## Previously Implemented OOP Concepts
-
-The system continues to demonstrate the use of fundamental OOP concepts such as classes and objects, encapsulation, inheritance, polymorphism, interfaces, method overriding, static methods and variables, final keyword, abstract classes, packages, and constructor overloading.
-
 ## Conclusion
 
 The IIITD ERP System demonstrates a comprehensive application of object-oriented programming principles, including the new additions of generic programming and exception handling, as well as the fundamental concepts from the Object class. These concepts work together to create a flexible, type-safe, and robust system that can handle various scenarios in academic administration, including the management of teaching assistants.
