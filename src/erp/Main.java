@@ -39,11 +39,11 @@ public class Main {
             user.displayInfo();
 
             if (user instanceof Student) {
-                studentInterface.run(user);
+                StudentInterface.run(user);
             } else if (user instanceof Professor) {
                 professorInterface.run((Professor) user);
             } else if (user instanceof Admin) {
-                adminInterface.adminMenu();
+                AdminInterface.adminMenu();
             } else {
                 System.out.println("Unknown user type. Exiting.");
                 break;

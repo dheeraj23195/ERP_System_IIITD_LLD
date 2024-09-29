@@ -107,7 +107,7 @@ public class AdminInterface {
             return false;
         }
         System.out.println("Here are the current course details: ");
-        System.out.println(course.toString());
+        System.out.println(course);
 
         while (true) {
             System.out.println("\nWhat would you like to update?");
@@ -175,7 +175,7 @@ public class AdminInterface {
             }
 
             System.out.println("Updated course details: ");
-            System.out.println(course.toString());
+            System.out.println(course);
         }
     }
 

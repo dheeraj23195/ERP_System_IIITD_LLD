@@ -6,8 +6,8 @@ import java.util.stream.Collectors;
 import java.util.Map;
 
 public class TAInterface {
-    private Scanner scanner;
-    private Login loginSystem;
+    private final Scanner scanner;
+    private final Login loginSystem;
 
     public TAInterface(Login loginSystem) {
         this.loginSystem = loginSystem;

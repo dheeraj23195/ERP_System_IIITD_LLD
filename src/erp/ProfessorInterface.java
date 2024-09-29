@@ -6,8 +6,8 @@ import java.util.Scanner;
 import java.util.stream.Collectors;
 
 public class ProfessorInterface {
-    private Scanner scanner;
-    private Login loginSystem;
+    private final Scanner scanner;
+    private final Login loginSystem;
 
     public ProfessorInterface(Login loginSystem) {
         this.loginSystem = loginSystem;
@@ -76,7 +76,7 @@ public class ProfessorInterface {
             System.out.println("Course not found.");
             return;
         }
-        feedback.displayAllFeedbackForCourse(courseCode, course.getSemester());
+        Feedback.displayAllFeedbackForCourse(courseCode, course.getSemester());
     }
 
     private void displayCourses(Professor prof) {

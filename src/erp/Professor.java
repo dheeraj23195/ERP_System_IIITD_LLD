@@ -5,7 +5,7 @@ import java.util.List;
 
 
 public class Professor extends User implements Schedulable {
-    private List<String> taughtCourses;
+    private final List<String> taughtCourses;
 
     public Professor(int id, String password, String name) {
         super(id, password, name, "Professor");

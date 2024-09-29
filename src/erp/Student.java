@@ -9,8 +9,8 @@ public class Student extends User implements Gradable,Schedulable{
     private int rollno;
     private int semester;
     public CourseManager courseManager;
-    private static List<Courses> completedCourses = new ArrayList<>();
-    private static List<TAApplication> taApplications = new ArrayList<>();
+    private static final List<Courses> completedCourses = new ArrayList<>();
+    private static final List<TAApplication> taApplications = new ArrayList<>();
     private boolean isTA;
 
     public Student(int id, String password, String name, String role, long phoneno, int rollno, int semester) {
@@ -112,8 +112,8 @@ public class Student extends User implements Gradable,Schedulable{
     }
 
     class TAApplication {
-        private Student student;
-        private String courseCode;
+        private final Student student;
+        private final String courseCode;
         private boolean approved;
 
         public TAApplication(Student student, String courseCode) {

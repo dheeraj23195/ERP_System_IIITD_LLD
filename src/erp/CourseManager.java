@@ -6,18 +6,17 @@ import java.util.stream.Collectors;
 
 public class CourseManager {
     private static final int MAX_CREDITS = 20;
-    private List<Courses> registeredCourses;
-    private Map<String, CompletedCourse> completedCourses;
+    private final List<Courses> registeredCourses;
+    private final Map<String, CompletedCourse> completedCourses;
     private static int currentSemester;
     private int currentCredits;
-    private static Scanner sc = new Scanner(System.in);
     private static Login loginSystem;
     private static final int DROPDEADLINETIME=30;
 
     public CourseManager(int currentSemester) {
         this.registeredCourses = new ArrayList<>();
         this.completedCourses = new HashMap<>();
-        this.currentSemester = currentSemester;
+        CourseManager.currentSemester = currentSemester;
         this.currentCredits = 0;
     }
 
@@ -93,8 +92,10 @@ public class CourseManager {
     }
 
     private boolean arePrerequisitesMet(Courses course) {
-        if (course.getPrereq() == null || course.getPrereq().length == 0) {
+        if (course.getPrereq() == null) {
             return true;
+        } else {
+            course.getPrereq();
         }
         for (String prereq : course.getPrereq()) {
             if (!Student.checkCourseCompletion(prereq)) {
@@ -125,7 +126,7 @@ public class CourseManager {
                     course.coursename,
                     course.getProfessorName(),
                     course.getCredits(),
-                    timings.toString(),
+                    timings,
                     course.getSemester());
         }
     }
@@ -170,7 +171,7 @@ public class CourseManager {
     }
 
     public void updateSemester(int newSemester) {
-        this.currentSemester = newSemester;
+        currentSemester = newSemester;
         this.registeredCourses.clear();
         this.currentCredits = 0;
     }
@@ -280,8 +281,8 @@ public class CourseManager {
     }
 
     class CompletedCourse {
-        private Courses course;
-        private String grade;
+        private final Courses course;
+        private final String grade;
 
         public CompletedCourse(Courses course, String grade) {
             this.course = course;

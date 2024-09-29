@@ -7,7 +7,7 @@ import java.util.Map;
 
 public class Feedback<T> {
     private T feedback;
-    private static Map<String, List<Feedback<?>>> allFeedbacks = new HashMap<>();
+    private static final Map<String, List<Feedback<?>>> allFeedbacks = new HashMap<>();
 
     public Feedback(T feedback) {
         this.feedback = feedback;

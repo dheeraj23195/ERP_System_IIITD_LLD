@@ -5,7 +5,7 @@ import java.util.ArrayList;
 import java.util.List;
 
 public class Courses {
-    private static List<Courses> allCourses = new ArrayList<>();
+    private static final List<Courses> allCourses = new ArrayList<>();
     public String code;
     public String coursename;
     private Professor assignedProfessor;

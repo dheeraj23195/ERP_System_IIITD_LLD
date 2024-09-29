@@ -4,8 +4,8 @@ import java.util.ArrayList;
 import java.util.List;
 
 public class TeachingAss extends Student {
-    private List<String> assignedCourses;
-    private static List<TeachingAss> approvedTAs = new ArrayList<>();
+    private final List<String> assignedCourses;
+    private static final List<TeachingAss> approvedTAs = new ArrayList<>();
 
     public TeachingAss(Student student) {
         super(student.getId(), student.getPassword(), student.getName(), "TeachingAssistant", student.getPhoneno(), student.getRollno(), student.getSemester());

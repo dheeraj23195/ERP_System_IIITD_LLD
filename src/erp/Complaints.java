@@ -5,12 +5,12 @@ import java.time.LocalDateTime;
 import java.time.format.DateTimeFormatter;
 
 public class Complaints {
-    private String compId;
-    private String compName;
-    private String compDesc;
-    private String compDate;
+    private final String compId;
+    private final String compName;
+    private final String compDesc;
+    private final String compDate;
     private ComplaintStatus compStatus;
-    private int userid;
+    private final int userid;
 
     public Complaints(int userid, String compName, String compDesc) {
         this.compId = generateComplaintID();

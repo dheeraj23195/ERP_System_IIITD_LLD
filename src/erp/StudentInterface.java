@@ -3,7 +3,7 @@ package erp;
 import java.util.*;
 
 public class StudentInterface {
-    private static Scanner scanner = new Scanner(System.in);
+    private static final Scanner scanner = new Scanner(System.in);
     private static TAInterface taInterface;
 
     public static void setTAInterface(TAInterface taInterface) {
@@ -11,12 +11,11 @@ public class StudentInterface {
     }
 
     public static void run(User user) {
-        if (!(user instanceof Student)) {
+        if (!(user instanceof Student student)) {
             System.out.println("Invalid user type for Student Interface.");
             return;
         }
 
-        Student student = (Student) user;
         System.out.println("Welcome, " + student.getName() + "!");
 
         while (true) {

@@ -5,7 +5,7 @@ import java.util.HashMap;
 import java.util.Map;
 
 public class ComplaintManager {
-    private static Map<String, Complaints> complaintsMap = new HashMap<>();
+    private static final Map<String, Complaints> complaintsMap = new HashMap<>();
 
     public static void addComplaint(Complaints complaint) {
         complaintsMap.put(complaint.getCompId(), complaint);

@@ -5,10 +5,10 @@ import java.util.Map;
 import java.util.Scanner;
 
 public class Login{
-    private HashMap<Integer, User> usersMap = new HashMap<>();
-    private static HashMap<Integer, Student> studentsMap = new HashMap<>();
-    private static HashMap<Integer, Professor> professorsMap = new HashMap<>();
-    private Scanner scanner = new Scanner(System.in);
+    private final HashMap<Integer, User> usersMap = new HashMap<>();
+    private static final HashMap<Integer, Student> studentsMap = new HashMap<>();
+    private static final HashMap<Integer, Professor> professorsMap = new HashMap<>();
+    private final Scanner scanner = new Scanner(System.in);
     private static final int ADMIN_ID = 2005;
     private static final String ADMIN_PASSWORD = "admin123";
 
